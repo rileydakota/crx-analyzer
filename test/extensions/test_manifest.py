@@ -80,14 +80,65 @@ def test_missing_required_fields():
     with pytest.raises(ValueError):
         ChromeManifest(**manifest_data)
 
-def test_manifest_from_file():
-    manifest_data = json.load(open("test/extensions/test_manifests/manifest1.json"))
+test_cases = [
+    (
+        "test/extensions/test_manifests/manifest_edge_redux.json",
+        {
+            "name": "Redux DevTools",
+            "version": "3.2.7", 
+            "manifest_version": 3,
+            "action": {
+                "default_popup": "devpanel.html#popup",
+                "default_icon": "img/logo/gray.png",
+                "default_title": "Redux DevTools"
+            },
+            "permissions": ["notifications", "contextMenus", "storage"],
+            "host_permissions": ["file:///*", "http://*/*", "https://*/*"],
+            "background": {"service_worker": "background.bundle.js"}
+        }
+    ),
+    (
+        "test/extensions/test_manifests/manifest_chrome_redux.json",
+        {
+            "name": "Redux DevTools",
+            "version": "3.2.7",
+            "manifest_version": 3,
+            "action": {
+                "default_popup": "devpanel.html#popup",
+                "default_icon": "img/logo/gray.png",
+                "default_title": "Redux DevTools"
+            },
+            "permissions": ["notifications", "contextMenus", "storage"],
+            "host_permissions": ["file:///*", "http://*/*", "https://*/*"],
+            "background": {"service_worker": "background.bundle.js"}
+        }
+    ),
+    (
+        "test/extensions/test_manifests/manifest_malicious_poc.json",
+        {
+            "name": "Hello Extensions",
+            "version": "1.0",
+            "manifest_version": 3,
+            "action": {
+                "default_popup": "hello.html",
+                "default_icon": "hello_extensions.png"
+            },
+            "permissions": ["webRequest", "cookies"],
+            "host_permissions": ["<all_urls>"],
+            "background": {"service_worker": "background.js"}
+        }
+    )
+]
+
+@pytest.mark.parametrize("manifest_file,expected", test_cases)
+def test_manifest_from_file(manifest_file, expected):
+    manifest_data = json.load(open(manifest_file))
     manifest = ChromeManifest(**manifest_data)
-    assert manifest.name == "Hello Extensions"
-    assert manifest.version == "1.0"
-    assert manifest.manifest_version == 3
-    assert manifest.action['default_popup'] == "hello.html"
-    assert manifest.action['default_icon'] == "hello_extensions.png"
-    assert manifest.permissions == ["webRequest", "cookies"]
-    assert manifest.host_permissions == ["<all_urls>"]
-    assert manifest.background.service_worker == "background.js"
+
+    assert manifest.name == expected["name"]
+    assert manifest.version == expected["version"]
+    assert manifest.manifest_version == expected["manifest_version"]
+    assert manifest.action == expected["action"]
+    assert manifest.permissions == expected["permissions"]
+    assert manifest.host_permissions == expected["host_permissions"]
+    assert manifest.background.service_worker == expected["background"]["service_worker"]

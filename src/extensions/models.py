@@ -24,7 +24,9 @@ class BackgroundConfig(BaseModel):
     persistent: bool = False
 
 class ExternallyConnectable(BaseModel):
-    matches: List[str]
+    matches: Optional[List[str]] = None
+    ids: Optional[List[str]] = None
+    accepts_tls_channel_id: Optional[bool] = None
 
 class CrossOriginPolicy(BaseModel):
     value: str
