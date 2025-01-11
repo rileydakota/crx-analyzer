@@ -1,3 +1,7 @@
+default_install_hook_types:
+    - pre-commit
+    - pre-push
+
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.3.0
@@ -22,6 +26,13 @@ repos:
     rev: v0.1.8  # Use latest tag on GitHub
     hooks:
     -   id: ripsecrets
+-   repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.0.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: [--verbose]
+
 # -   repo: https://github.com/awslabs/git-secrets
 #     rev: v1.3.0
 #     hooks:
