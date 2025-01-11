@@ -98,7 +98,6 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "pydantic" },
-    { name = "ruff" },
 ]
 
 [package.dev-dependencies]
@@ -107,13 +106,11 @@ dev = [
     { name = "isort" },
     { name = "pre-commit" },
     { name = "pytest" },
+    { name = "ruff" },
 ]
 
 [package.metadata]
-requires-dist = [
-    { name = "pydantic", specifier = ">=2.10.5" },
-    { name = "ruff", specifier = ">=0.9.1" },
-]
+requires-dist = [{ name = "pydantic", specifier = ">=2.10.5" }]
 
 [package.metadata.requires-dev]
 dev = [
@@ -121,6 +118,7 @@ dev = [
     { name = "isort", specifier = ">=5.13.2" },
     { name = "pre-commit", specifier = ">=4.0.1" },
     { name = "pytest", specifier = ">=8.3.4" },
+    { name = "ruff", specifier = ">=0.9.1" },
 ]
 
 [[package]]
