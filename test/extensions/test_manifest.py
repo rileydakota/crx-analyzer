@@ -1,17 +1,27 @@
-import pytest, json
-from src.extensions.models import ChromeManifest, BackgroundConfig, OptionsUI, IncognitoMode
+import json
+
+import pytest
+
+from src.extensions.models import (
+    BackgroundConfig,
+    ChromeManifest,
+    IncognitoMode,
+    OptionsUI,
+)
+
 
 def test_minimal_valid_manifest():
     """Test manifest with only required fields"""
     manifest_data = {
         "manifest_version": 3,
         "name": "Test Extension",
-        "version": "1.0.0"
+        "version": "1.0.0",
     }
     manifest = ChromeManifest(**manifest_data)
     assert manifest.name == "Test Extension"
     assert manifest.version == "1.0.0"
     assert manifest.manifest_version == 3
+
 
 def test_full_manifest():
     """Test manifest with optional fields"""
@@ -20,20 +30,11 @@ def test_full_manifest():
         "name": "Full Test Extension",
         "version": "1.0.0",
         "description": "A test extension",
-        "background": {
-            "service_worker": "background.js"
-        },
-        "options_ui": {
-            "page": "options.html",
-            "chrome_style": True
-        },
+        "background": {"service_worker": "background.js"},
+        "options_ui": {"page": "options.html", "chrome_style": True},
         "permissions": ["storage", "tabs"],
         "incognito": "split",
-        "icons": {
-            "16": "icon16.png",
-            "48": "icon48.png",
-            "128": "icon128.png"
-        }
+        "icons": {"16": "icon16.png", "48": "icon48.png", "128": "icon128.png"},
     }
     manifest = ChromeManifest(**manifest_data)
     assert manifest.description == "A test extension"
@@ -46,18 +47,20 @@ def test_full_manifest():
     assert manifest.icons == {
         "16": "icon16.png",
         "48": "icon48.png",
-        "128": "icon128.png"
+        "128": "icon128.png",
     }
+
 
 def test_invalid_manifest_version():
     """Test that invalid manifest version raises error"""
     manifest_data = {
-        "manifest_version": "NOPE", 
+        "manifest_version": "NOPE",
         "name": "Test Extension",
-        "version": "1.0.0"
+        "version": "1.0.0",
     }
     with pytest.raises(ValueError):
         ChromeManifest(**manifest_data)
+
 
 def test_invalid_incognito_mode():
     """Test that invalid incognito mode raises error"""
@@ -65,37 +68,39 @@ def test_invalid_incognito_mode():
         "manifest_version": 3,
         "name": "Test Extension",
         "version": "1.0.0",
-        "incognito": "invalid_mode"
+        "incognito": "invalid_mode",
     }
     with pytest.raises(ValueError):
         ChromeManifest(**manifest_data)
+
 
 def test_missing_required_fields():
     """Test that missing required fields raise error"""
     manifest_data = {
         "manifest_version": 3,
-        "name": "Test Extension"
+        "name": "Test Extension",
         # Missing version field
     }
     with pytest.raises(ValueError):
         ChromeManifest(**manifest_data)
+
 
 test_cases = [
     (
         "test/extensions/test_manifests/manifest_edge_redux.json",
         {
             "name": "Redux DevTools",
-            "version": "3.2.7", 
+            "version": "3.2.7",
             "manifest_version": 3,
             "action": {
                 "default_popup": "devpanel.html#popup",
                 "default_icon": "img/logo/gray.png",
-                "default_title": "Redux DevTools"
+                "default_title": "Redux DevTools",
             },
             "permissions": ["notifications", "contextMenus", "storage"],
             "host_permissions": ["file:///*", "http://*/*", "https://*/*"],
-            "background": {"service_worker": "background.bundle.js"}
-        }
+            "background": {"service_worker": "background.bundle.js"},
+        },
     ),
     (
         "test/extensions/test_manifests/manifest_chrome_redux.json",
@@ -106,12 +111,12 @@ test_cases = [
             "action": {
                 "default_popup": "devpanel.html#popup",
                 "default_icon": "img/logo/gray.png",
-                "default_title": "Redux DevTools"
+                "default_title": "Redux DevTools",
             },
             "permissions": ["notifications", "contextMenus", "storage"],
             "host_permissions": ["file:///*", "http://*/*", "https://*/*"],
-            "background": {"service_worker": "background.bundle.js"}
-        }
+            "background": {"service_worker": "background.bundle.js"},
+        },
     ),
     (
         "test/extensions/test_manifests/manifest_malicious_poc.json",
@@ -121,12 +126,12 @@ test_cases = [
             "manifest_version": 3,
             "action": {
                 "default_popup": "hello.html",
-                "default_icon": "hello_extensions.png"
+                "default_icon": "hello_extensions.png",
             },
             "permissions": ["webRequest", "cookies"],
             "host_permissions": ["<all_urls>"],
-            "background": {"service_worker": "background.js"}
-        }
+            "background": {"service_worker": "background.js"},
+        },
     ),
     (
         "test/extensions/test_manifests/manifest_edge_example.json",
@@ -138,10 +143,10 @@ test_cases = [
             "content_scripts": [
                 {
                     "matches": ["<all_urls>"],
-                    "js": ["lib/jquery.min.js","content-scripts/content.js"]
+                    "js": ["lib/jquery.min.js", "content-scripts/content.js"],
                 }
-            ]
-        }
+            ],
+        },
     ),
     (
         "test/extensions/test_manifests/manifest_pixiv_batch_downloader.json",
@@ -151,14 +156,14 @@ test_cases = [
             "manifest_version": 3,
             "permissions": [
                 "downloads",
-                "downloads.shelf", 
+                "downloads.shelf",
                 "storage",
                 "declarativeNetRequestWithHostAccess",
-                "webRequest"
+                "webRequest",
             ],
             "incognito": "split",
-            "background": {"service_worker": "js/background.js"}
-        }
+            "background": {"service_worker": "js/background.js"},
+        },
     ),
     (
         "test/extensions/test_manifests/manifest_chrome_vite.json",
@@ -167,27 +172,24 @@ test_cases = [
             "version": "0.0.0",
             "manifest_version": 3,
             "description": "description in manifest.json",
-            "options_ui": {
-                "page": "src/pages/options/index.html"
-            },
+            "options_ui": {"page": "src/pages/options/index.html"},
             "action": {
                 "default_popup": "src/pages/popup/index.html",
-                "default_icon": {
-                    "32": "icon-32.png"
-                }
+                "default_icon": {"32": "icon-32.png"},
             },
             "permissions": ["activeTab"],
             "content_scripts": [
                 {
                     "matches": ["http://*/*", "https://*/*", "<all_urls>"],
                     "js": ["src/pages/content/index.tsx"],
-                    "css": ["contentStyle.css"]
+                    "css": ["contentStyle.css"],
                 }
             ],
-            "devtools_page": "src/pages/devtools/index.html"
-        }
-    )
+            "devtools_page": "src/pages/devtools/index.html",
+        },
+    ),
 ]
+
 
 @pytest.mark.parametrize("manifest_file,expected", test_cases)
 def test_manifest_from_file(manifest_file, expected):
@@ -196,7 +198,7 @@ def test_manifest_from_file(manifest_file, expected):
 
     # Check core fields that should exist in all manifests
     assert manifest.name == expected["name"]
-    assert manifest.version == expected["version"] 
+    assert manifest.version == expected["version"]
     assert manifest.manifest_version == expected["manifest_version"]
 
     # Check optional fields if they exist in expected
@@ -207,7 +209,10 @@ def test_manifest_from_file(manifest_file, expected):
     if "host_permissions" in expected:
         assert manifest.host_permissions == expected["host_permissions"]
     if "background" in expected:
-        assert manifest.background.service_worker == expected["background"]["service_worker"]
+        assert (
+            manifest.background.service_worker
+            == expected["background"]["service_worker"]
+        )
     if "content_scripts" in expected:
         assert manifest.content_scripts == expected["content_scripts"]
     if "description" in expected:

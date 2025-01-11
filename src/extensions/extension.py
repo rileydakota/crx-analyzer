@@ -1,12 +1,16 @@
-from enum import Enum
-from models.manifest import Manifest
 import os
-import download
+import json
 import zipfile
+from enum import Enum
+
+import download
+from models.manifest import Manifest
+
 
 class Browser(Enum):
     CHROME = "chrome"
     EDGE = "edge"
+
 
 class Extension:
     def __init__(self, extension_id: str, browser: Browser, working_dir: str = "tmp"):
@@ -24,27 +28,25 @@ class Extension:
                 self.download_url = download.get_chrome_extension_url(self.extension_id)
             case Browser.EDGE:
                 self.download_url = download.get_edge_extension_url(self.extension_id)
-        
+
         self.__download_extension()
         self.__unzip_extension()
 
         self.manifest = self.__get_manifest()
 
     def __unzip_extension(self):
-        with zipfile.ZipFile(self.extension_zip_path, 'r') as zip_ref:
+        with zipfile.ZipFile(self.extension_zip_path, "r") as zip_ref:
             zip_ref.extractall(self.working_dir)
-    
+
     def __download_extension(self):
         download.download_extension(self.download_url, self.extension_zip_path)
 
     def __get_manifest(self):
         manifest_path = os.path.join(self.extension_dir_path, "manifest.json")
-        with open(manifest_path, 'r') as manifest_file:
+        with open(manifest_path, "r") as manifest_file:
             manifest_data = json.load(manifest_file)
             return Manifest(manifest_data)
-    
+
     def __exit__(self):
         os.remove(self.extension_zip_path)
         os.rmdir(self.extension_dir_path)
-
-
