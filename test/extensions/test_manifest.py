@@ -127,6 +127,65 @@ test_cases = [
             "host_permissions": ["<all_urls>"],
             "background": {"service_worker": "background.js"}
         }
+    ),
+    (
+        "test/extensions/test_manifests/manifest_edge_example.json",
+        {
+            "name": "NASA picture of the day viewer",
+            "version": "0.0.0.1",
+            "manifest_version": 3,
+            "description": "An extension that uses JavaScript to insert an image at the top of the webpage.",
+            "content_scripts": [
+                {
+                    "matches": ["<all_urls>"],
+                    "js": ["lib/jquery.min.js","content-scripts/content.js"]
+                }
+            ]
+        }
+    ),
+    (
+        "test/extensions/test_manifests/manifest_pixiv_batch_downloader.json",
+        {
+            "name": "Powerful Pixiv Downloader",
+            "version": "17.3.1",
+            "manifest_version": 3,
+            "permissions": [
+                "downloads",
+                "downloads.shelf", 
+                "storage",
+                "declarativeNetRequestWithHostAccess",
+                "webRequest"
+            ],
+            "incognito": "split",
+            "background": {"service_worker": "js/background.js"}
+        }
+    ),
+    (
+        "test/extensions/test_manifests/manifest_chrome_vite.json",
+        {
+            "name": "name in manifest.json",
+            "version": "0.0.0",
+            "manifest_version": 3,
+            "description": "description in manifest.json",
+            "options_ui": {
+                "page": "src/pages/options/index.html"
+            },
+            "action": {
+                "default_popup": "src/pages/popup/index.html",
+                "default_icon": {
+                    "32": "icon-32.png"
+                }
+            },
+            "permissions": ["activeTab"],
+            "content_scripts": [
+                {
+                    "matches": ["http://*/*", "https://*/*", "<all_urls>"],
+                    "js": ["src/pages/content/index.tsx"],
+                    "css": ["contentStyle.css"]
+                }
+            ],
+            "devtools_page": "src/pages/devtools/index.html"
+        }
     )
 ]
 
@@ -135,10 +194,23 @@ def test_manifest_from_file(manifest_file, expected):
     manifest_data = json.load(open(manifest_file))
     manifest = ChromeManifest(**manifest_data)
 
+    # Check core fields that should exist in all manifests
     assert manifest.name == expected["name"]
-    assert manifest.version == expected["version"]
+    assert manifest.version == expected["version"] 
     assert manifest.manifest_version == expected["manifest_version"]
-    assert manifest.action == expected["action"]
-    assert manifest.permissions == expected["permissions"]
-    assert manifest.host_permissions == expected["host_permissions"]
-    assert manifest.background.service_worker == expected["background"]["service_worker"]
+
+    # Check optional fields if they exist in expected
+    if "action" in expected:
+        assert manifest.action == expected["action"]
+    if "permissions" in expected:
+        assert manifest.permissions == expected["permissions"]
+    if "host_permissions" in expected:
+        assert manifest.host_permissions == expected["host_permissions"]
+    if "background" in expected:
+        assert manifest.background.service_worker == expected["background"]["service_worker"]
+    if "content_scripts" in expected:
+        assert manifest.content_scripts == expected["content_scripts"]
+    if "description" in expected:
+        assert manifest.description == expected["description"]
+    if "incognito" in expected:
+        assert manifest.incognito == expected["incognito"]
