@@ -52,7 +52,7 @@ def test_full_manifest():
 def test_invalid_manifest_version():
     """Test that invalid manifest version raises error"""
     manifest_data = {
-        "manifest_version": "", 
+        "manifest_version": "NOPE", 
         "name": "Test Extension",
         "version": "1.0.0"
     }
