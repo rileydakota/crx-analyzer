@@ -51,3 +51,6 @@ tmp/
 
 #any crx files
 *.crx
+
+    #ruff cache
+.ruff_cache/
