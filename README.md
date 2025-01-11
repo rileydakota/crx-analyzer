@@ -32,10 +32,15 @@ uv run pre-commit install
 
 ## Developement tasks
 
+### Run tests
+```bash
+uv run pytest
+```
+
+### Linters and styling
+
 ```bash
 uv run ruff check .
-uv run ruff format .
-uv run ruff check --fix .
-uv run ruff check --fix --check-only .
-uv run ruff check --fix --check-only --diff .
+uv run black
+uv run isort
 ```
