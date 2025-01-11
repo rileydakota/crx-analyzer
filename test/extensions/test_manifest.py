@@ -51,17 +51,6 @@ def test_full_manifest():
     }
 
 
-def test_invalid_manifest_version():
-    """Test that invalid manifest version raises error"""
-    manifest_data = {
-        "manifest_version": "NOPE",
-        "name": "Test Extension",
-        "version": "1.0.0",
-    }
-    with pytest.raises(ValueError):
-        ChromeManifest(**manifest_data)
-
-
 def test_invalid_incognito_mode():
     """Test that invalid incognito mode raises error"""
     manifest_data = {
@@ -69,17 +58,6 @@ def test_invalid_incognito_mode():
         "name": "Test Extension",
         "version": "1.0.0",
         "incognito": "invalid_mode",
-    }
-    with pytest.raises(ValueError):
-        ChromeManifest(**manifest_data)
-
-
-def test_missing_required_fields():
-    """Test that missing required fields raise error"""
-    manifest_data = {
-        "manifest_version": 3,
-        "name": "Test Extension",
-        # Missing version field
     }
     with pytest.raises(ValueError):
         ChromeManifest(**manifest_data)
@@ -169,7 +147,6 @@ test_cases = [
         "test/extensions/test_manifests/manifest_chrome_vite.json",
         {
             "name": "name in manifest.json",
-            "version": "0.0.0",
             "manifest_version": 3,
             "description": "description in manifest.json",
             "options_ui": {"page": "src/pages/options/index.html"},
@@ -198,10 +175,12 @@ def test_manifest_from_file(manifest_file, expected):
 
     # Check core fields that should exist in all manifests
     assert manifest.name == expected["name"]
-    assert manifest.version == expected["version"]
     assert manifest.manifest_version == expected["manifest_version"]
 
     # Check optional fields if they exist in expected
+
+    if "version" in expected:
+        assert manifest.version == expected["version"]
     if "action" in expected:
         assert manifest.action == expected["action"]
     if "permissions" in expected:

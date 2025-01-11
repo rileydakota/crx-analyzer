@@ -197,7 +197,7 @@ class ChromeManifest(BaseModel):
     # Required fields
     manifest_version: int = Field(..., Literal=[2, 3])
     name: str
-    version: str
+    version: Optional[str] = None
 
     # Recommended fields
     default_locale: Optional[str] = "en"

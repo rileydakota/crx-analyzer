@@ -18,6 +18,10 @@ repos:
         args: [--fix, --exit-non-zero-on-fix]
         types_or: [python, pyi]
         require_serial: true
+-   repo: https://github.com/sirwart/ripsecrets
+    rev: v0.1.8  # Use latest tag on GitHub
+    hooks:
+    -   id: ripsecrets
 # -   repo: https://github.com/awslabs/git-secrets
 #     rev: v1.3.0
 #     hooks:
