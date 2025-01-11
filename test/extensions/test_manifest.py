@@ -1,5 +1,5 @@
 import pytest, json
-from src.extensions.manifest import ChromeManifest, BackgroundConfig, OptionsUI, IncognitoMode
+from src.extensions.models import ChromeManifest, BackgroundConfig, OptionsUI, IncognitoMode
 
 def test_minimal_valid_manifest():
     """Test manifest with only required fields"""
