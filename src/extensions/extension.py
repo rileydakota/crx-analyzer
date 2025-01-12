@@ -35,14 +35,14 @@ class Extension:
 
         self.manifest = self.__get_manifest()
 
-    def __unzip_extension(self):
+    def __unzip_extension(self) -> None:
         with zipfile.ZipFile(self.extension_zip_path, "r") as zip_ref:
             zip_ref.extractall(self.extension_dir_path)
 
-    def __download_extension(self):
+    def __download_extension(self) -> None:
         download.download_extension(self.download_url, self.extension_zip_path)
 
-    def __get_manifest(self):
+    def __get_manifest(self) -> ChromeManifest:
         manifest_path = os.path.join(self.extension_dir_path, "manifest.json")
         with open(manifest_path, "r") as manifest_file:
             manifest_data = json.load(manifest_file)
