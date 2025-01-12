@@ -26,7 +26,7 @@ class OptionsUI(BaseModel):
 
 
 class BackgroundConfig(BaseModel):
-    service_worker: str
+    service_worker: Optional[str] = None
     persistent: bool = False
 
 
@@ -214,7 +214,7 @@ class ChromeManifest(BaseModel):
     commands: Optional[Dict[str, Any]] = None
     content_capabilities: Optional[Any] = None
     content_scripts: Optional[List[Dict[str, Any]]] = None
-    content_security_policy: Optional[Dict[str, str]] = None
+    content_security_policy: Optional[Union[Dict[str, str], str]] = None
     converted_from_user_script: Optional[Any] = None
     cross_origin_embedder_policy: Optional[CrossOriginPolicy] = None
     cross_origin_opener_policy: Optional[CrossOriginPolicy] = None
@@ -253,4 +253,4 @@ class ChromeManifest(BaseModel):
     tts_engine: Optional[Dict[str, Any]] = None
     update_url: Optional[HttpUrl] = None
     version_name: Optional[str] = None
-    web_accessible_resources: Optional[List[Dict[str, Any]]] = None
+    web_accessible_resources: Optional[List[Union[Dict[str, Any], str]]] = None

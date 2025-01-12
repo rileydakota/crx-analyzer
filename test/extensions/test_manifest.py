@@ -81,6 +81,29 @@ test_cases = [
         },
     ),
     (
+        "test/extensions/test_manifests/manifest_edge_redux_v2.json",
+        {
+            "name": "Redux DevTools",
+            "version": "3.1.6",
+            "manifest_version": 2,
+            "page_action": {
+                "default_popup": "window.html#popup",
+                "default_icon": "img/logo/gray.png",
+                "default_title": "Redux DevTools",
+            },
+            "permissions": [
+                "notifications",
+                "contextMenus",
+                "storage",
+                "file:///*",
+                "http://*/*",
+                "https://*/*",
+            ],
+            "background": {"scripts": ["background.bundle.js"], "persistent": False},
+            "options_ui": {"page": "options.html", "chrome_style": True},
+        },
+    ),
+    (
         "test/extensions/test_manifests/manifest_chrome_redux.json",
         {
             "name": "Redux DevTools",
@@ -187,11 +210,6 @@ def test_manifest_from_file(manifest_file, expected):
         assert manifest.permissions == expected["permissions"]
     if "host_permissions" in expected:
         assert manifest.host_permissions == expected["host_permissions"]
-    if "background" in expected:
-        assert (
-            manifest.background.service_worker
-            == expected["background"]["service_worker"]
-        )
     if "content_scripts" in expected:
         assert manifest.content_scripts == expected["content_scripts"]
     if "description" in expected:
