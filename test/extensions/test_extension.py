@@ -1,5 +1,4 @@
 import os
-import pytest
 import shutil
 from unittest.mock import patch
 
@@ -16,7 +15,6 @@ def mock_download_extension(url: str, output_path: str) -> None:
     shutil.copyfile(test_crx_path, output_path)
 
 
-@pytest.mark.integtest
 @patch(
     "src.extensions.download.download_extension", side_effect=mock_download_extension
 )
@@ -31,7 +29,17 @@ def test_edge_extension_download(mock_download):
             extension.sha256
             == "f4396645d06777cb879406c3226cb69b60fc923baff1868fb5db4588ef0e07e6"
         )
-
+        assert extension.javascript_files == [
+            "tmp/nnkgneoiohoecpdiaponcejilbhhikei/background.bundle.js",
+            "tmp/nnkgneoiohoecpdiaponcejilbhhikei/page.bundle.js",
+            "tmp/nnkgneoiohoecpdiaponcejilbhhikei/window.bundle.js",
+            "tmp/nnkgneoiohoecpdiaponcejilbhhikei/devtools.bundle.js",
+            "tmp/nnkgneoiohoecpdiaponcejilbhhikei/pagewrap.bundle.js",
+            "tmp/nnkgneoiohoecpdiaponcejilbhhikei/options.bundle.js",
+            "tmp/nnkgneoiohoecpdiaponcejilbhhikei/content.bundle.js",
+            "tmp/nnkgneoiohoecpdiaponcejilbhhikei/remote.bundle.js",
+            "tmp/nnkgneoiohoecpdiaponcejilbhhikei/devpanel.bundle.js",
+        ]
         # Verify manifest was parsed correctly
         assert extension.manifest is not None
         assert extension.manifest.name == "Redux DevTools"
