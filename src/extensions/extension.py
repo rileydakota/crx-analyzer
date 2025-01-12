@@ -2,6 +2,7 @@ import os
 import json
 import zipfile
 import shutil
+import hashlib
 from enum import Enum
 
 import src.extensions.download as download
@@ -20,6 +21,7 @@ class Extension:
         self.browser = browser
         self.extension_zip_path = os.path.join(working_dir, f"{self.extension_id}.crx")
         self.extension_dir_path = os.path.join(working_dir, f"{self.extension_id}")
+        self.sha256 = None  # Will be set after download
 
         if not os.path.exists(working_dir):
             os.makedirs(working_dir)
@@ -31,6 +33,9 @@ class Extension:
                 self.download_url = download.get_edge_extension_url(self.extension_id)
 
         self.__download_extension()
+        self.sha256 = hashlib.sha256(
+            open(self.extension_zip_path, "rb").read()
+        ).hexdigest()
         self.__unzip_extension()
 
         self.manifest = self.__get_manifest()
@@ -81,3 +86,11 @@ class Extension:
                 host = self.manifest.host_permissions or []
                 optional_host = self.manifest.optional_host_permissions or []
                 return permissions + optional + host + optional_host
+
+    @property
+    def javascript_files(self) -> list[str]:
+        return [
+            os.path.join(self.extension_dir_path, file)
+            for file in os.listdir(self.extension_dir_path)
+            if file.endswith(".js")
+        ]

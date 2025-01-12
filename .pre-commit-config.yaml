@@ -3,6 +3,8 @@ default_install_hook_types:
     - commit-msg
     - pre-push
 
+exclude: test/extensions/test_extension_zip/*
+
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.3.0
