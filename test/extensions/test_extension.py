@@ -27,6 +27,10 @@ def test_edge_extension_download(mock_download):
         # Verify files were downloaded and extracted
         assert os.path.exists(extension.extension_zip_path)
         assert os.path.exists(extension.extension_dir_path)
+        assert (
+            extension.sha256
+            == "f4396645d06777cb879406c3226cb69b60fc923baff1868fb5db4588ef0e07e6"
+        )
 
         # Verify manifest was parsed correctly
         assert extension.manifest is not None
