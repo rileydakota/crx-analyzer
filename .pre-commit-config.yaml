@@ -1,5 +1,6 @@
 default_install_hook_types:
     - pre-commit
+    - commit-msg
     - pre-push
 
 repos:
@@ -31,7 +32,7 @@ repos:
     hooks:
       - id: conventional-pre-commit
         stages: [commit-msg]
-        args: [--verbose]
+        args: [--verbose, --strict, --force-scope, feat, fix, chore, test, custom, ci, docs, refactor, style]
 
 # -   repo: https://github.com/awslabs/git-secrets
 #     rev: v1.3.0
