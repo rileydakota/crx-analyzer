@@ -55,3 +55,29 @@ class Extension:
     def __exit__(self, exc_type, exc_value, traceback):
         os.remove(self.extension_zip_path)
         shutil.rmtree(self.extension_dir_path)
+
+    @property
+    def name(self) -> str:
+        return self.manifest.name
+
+    @property
+    def version(self) -> str:
+        return self.manifest.version
+
+    @property
+    def manifest_version(self) -> int:
+        return self.manifest.manifest_version
+
+    @property
+    def permissions(self) -> list[str]:
+        match self.manifest_version:
+            case 2:
+                permissions = self.manifest.permissions or []
+                optional = self.manifest.optional_permissions or []
+                return permissions + optional
+            case 3:
+                permissions = self.manifest.permissions or []
+                optional = self.manifest.optional_permissions or []
+                host = self.manifest.host_permissions or []
+                optional_host = self.manifest.optional_host_permissions or []
+                return permissions + optional + host + optional_host

@@ -16,6 +16,17 @@ def test_edge_extension_download():
         # Verify manifest was parsed correctly
     assert extension.manifest is not None
     assert extension.manifest.name == "Redux DevTools"
+    assert extension.manifest.manifest_version == 2
+    assert sorted(extension.permissions) == sorted(
+        [
+            "notifications",
+            "contextMenus",
+            "storage",
+            "file:///*",
+            "http://*/*",
+            "https://*/*",
+        ]
+    )
 
     # Verify cleanup occurred
     assert not os.path.exists(extension.extension_zip_path)

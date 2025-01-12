@@ -195,9 +195,8 @@ class ChromePermission(str, Enum):
 
 class ChromeManifest(BaseModel):
     # Required fields
-    manifest_version: int = Field(..., Literal=[2, 3])
+    manifest_version: int = Field(..., Literal=[1, 2, 3])
     name: str
-    version: Optional[str] = None
 
     # Recommended fields
     default_locale: Optional[str] = "en"
@@ -205,6 +204,7 @@ class ChromeManifest(BaseModel):
     icons: Optional[Dict[str, str]] = None
 
     # Optional fields
+    version: Optional[str] = None
     action: Optional[Dict[str, Any]] = None
     author: Optional[str] = None
     automation: Optional[Any] = None
@@ -239,6 +239,7 @@ class ChromeManifest(BaseModel):
     offline_enabled: Optional[bool] = None
     omnibox: Optional[OmniboxConfig] = None
     optional_permissions: Optional[List[Union[ChromePermission, str]]] = None
+    optional_host_permissions: Optional[List[str]] = None
     options_page: Optional[str] = None
     options_ui: Optional[OptionsUI] = None
     permissions: Optional[List[Union[ChromePermission, str]]] = None
