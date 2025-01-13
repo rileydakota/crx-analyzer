@@ -1,5 +1,4 @@
 import click
-import pprint
 from rich.console import Console
 from extension import Extension, Browser
 from risk import get_risk_report
@@ -30,7 +29,7 @@ def cli(id, browser, output):
             console = Console()
             console.print(report)
         case "json":
-            pprint.pprint(report.model_dump(mode="json"))
+            print(report.json())
 
     # print(extension.name)
     # print(extension.version)
