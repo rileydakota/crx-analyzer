@@ -89,12 +89,13 @@ class ChromePermission(str, Enum):
     DECLARATIVE_NET_REQUEST = "declarativeNetRequest"
     DECLARATIVE_NET_REQUEST_WITH_HOST_ACCESS = "declarativeNetRequestWithHostAccess"
     DECLARATIVE_NET_REQUEST_FEEDBACK = "declarativeNetRequestFeedback"
-
+    DECLARATIVE_WEB_REQUEST = "declarativeWebRequest"
+    EXPERIMENTAL = "experimental"
     # System Features
     DNS = "dns"
     DESKTOP_CAPTURE = "desktopCapture"
     DOCUMENT_SCAN = "documentScan"
-
+    DISPLAY_SOURCE = "displaySource"
     # Downloads
     DOWNLOADS = "downloads"
     DOWNLOADS_OPEN = "downloads.open"
@@ -255,3 +256,11 @@ class ChromeManifest(BaseModel):
     update_url: Optional[HttpUrl] = None
     version_name: Optional[str] = None
     web_accessible_resources: Optional[List[Union[Dict[str, Any], str]]] = None
+
+
+class RiskLevel(str, Enum):
+    NONE = "none"
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    CRITICAL = "critical"

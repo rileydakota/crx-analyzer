@@ -3,10 +3,12 @@ import json
 import zipfile
 import shutil
 import hashlib
+import re
+
 from enum import Enum
 
-import src.extensions.download as download
-from src.extensions.models import ChromeManifest
+from extensions import download
+from extensions.models import ChromeManifest
 
 
 class Browser(Enum):
@@ -31,6 +33,8 @@ class Extension:
                 self.download_url = download.get_chrome_extension_url(self.extension_id)
             case Browser.EDGE:
                 self.download_url = download.get_edge_extension_url(self.extension_id)
+            case _:
+                raise ValueError(f"Invalid browser: {self.browser}")
 
         self.__download_extension()
         self.sha256 = hashlib.sha256(
@@ -94,3 +98,16 @@ class Extension:
             for file in os.listdir(self.extension_dir_path)
             if file.endswith(".js")
         ]
+
+    @property
+    def urls(self) -> list[str]:
+        urls = set()
+        url_pattern = r'https?://[^\s<>"\']+'
+
+        for js_file in self.javascript_files:
+            with open(js_file, "r", encoding="utf-8", errors="ignore") as f:
+                content = f.read()
+                found_urls = re.findall(url_pattern, content)
+                urls.update(found_urls)
+
+        return list(urls)
