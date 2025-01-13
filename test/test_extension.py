@@ -13,6 +13,7 @@ def mock_download_extension(url: str, output_path: str) -> None:
     shutil.copyfile(test_crx_path, output_path)
 
 
+# TODO: Verify if this is properly working
 @patch("src.download.download_extension", side_effect=mock_download_extension)
 def test_edge_extension_download(mock_download):
     extension_id = "nnkgneoiohoecpdiaponcejilbhhikei"
