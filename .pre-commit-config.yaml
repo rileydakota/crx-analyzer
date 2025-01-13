@@ -29,12 +29,12 @@ repos:
     rev: v0.1.8  # Use latest tag on GitHub
     hooks:
     -   id: ripsecrets
--   repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v4.0.0
-    hooks:
-      - id: conventional-pre-commit
-        stages: [commit-msg]
-        args: [--verbose, --strict, --force-scope, feat, fix, chore, test, custom, ci, docs, refactor, style]
+#-   repo: https://github.com/compilerla/conventional-pre-commit
+    #rev: v4.0.0
+    #hooks:
+    #  - id: conventional-pre-commit
+    #    stages: [commit-msg]
+    #    args: [--verbose, --strict, --force-scope, feat, fix, chore, test, custom, ci, docs, refactor, style]
 
 # -   repo: https://github.com/awslabs/git-secrets
 #     rev: v1.3.0
