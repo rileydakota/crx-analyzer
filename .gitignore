@@ -52,7 +52,7 @@ tmp/
 #any crx files except test extensions
 *.crx
 #directory for unit testing/mocking extension download
-!test/extensions/test_extension_zip/*.crx
+!test/test_extension_zip/*.crx
 
 #ruff cache
 .ruff_cache/
