@@ -6,8 +6,13 @@ import hashlib
 import re
 
 from enum import Enum
+from requests import HTTPError
 import download
 from models import ChromeManifest
+
+
+class InvalidExtensionIDError(Exception):
+    pass
 
 
 class Browser(Enum):
@@ -34,8 +39,17 @@ class Extension:
                 self.download_url = download.get_edge_extension_url(self.extension_id)
             case _:
                 raise ValueError(f"Invalid browser: {self.browser}")
+        try:
+            self.__download_extension()
+        except HTTPError as e:
+            match e.response.status_code:
+                case 404:
+                    raise InvalidExtensionIDError(
+                        f"403: Extension ID {self.extension_id} not found. Requested URL: {e.request.url}"
+                    )
+                case _:
+                    raise e
 
-        self.__download_extension()
         self.sha256 = hashlib.sha256(
             open(self.extension_zip_path, "rb").read()
         ).hexdigest()

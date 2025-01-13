@@ -118,7 +118,7 @@ def get_risk_report(extension: Extension) -> RiskReport:
         name=extension.name,
         metadata={},
         javascript_files=extension.javascript_files,
-        urls=[],
+        urls=extension.urls,
         fetch_calls=[],
         risk_score=risk_score,
         permissions=permissions_risk,
