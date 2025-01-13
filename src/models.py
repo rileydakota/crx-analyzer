@@ -227,7 +227,7 @@ class ChromeManifest(BaseModel):
     externally_connectable: Optional[ExternallyConnectable] = None
     file_browser_handlers: Optional[List[Any]] = None
     file_system_provider_capabilities: Optional[FileSystemProviderCapabilities] = None
-    homepage_url: Optional[HttpUrl] = None
+    homepage_url: Optional[str] = None
     host_permissions: Optional[List[str]] = None
     import_: Optional[List[ImportConfig]] = Field(None, alias="import")
     incognito: Optional[IncognitoMode] = None

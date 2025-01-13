@@ -59,6 +59,7 @@ def cli(id, browser, output):
             metadata_table.add_column("Value")
             metadata_table.add_row("Name", extension.name)
             metadata_table.add_row("Author", extension.author)
+            metadata_table.add_row("Hash (SHA256)", extension.sha256)
             metadata_table.add_row("Homepage", extension.homepage_url)
             metadata_table.add_row("Version", extension.version)
             metadata_table.add_row("Manifest Version", str(extension.manifest_version))
@@ -77,8 +78,19 @@ def cli(id, browser, output):
             )
             console.print("\n" * 3)
             console.print(grid)
-            console.print(report.javascript_files)
-            console.print(report.urls)
+
+            js_files_table = Table()
+            js_files_table.add_column("File")
+            for file in report.javascript_files:
+                js_files_table.add_row(file)
+
+            url_ref_table = Table()
+            url_ref_table.add_column("URL")
+            for url in report.urls:
+                url_ref_table.add_row(url)
+
+            console.print(js_files_table)
+            console.print(url_ref_table)
         case "json":
             print(report.json())
 
