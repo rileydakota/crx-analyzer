@@ -71,6 +71,9 @@ permissions_risk_map = {
         ChromePermission.TAB_CAPTURE,
         ChromePermission.TABS,
         ChromePermission.VPN_PROVIDER,
+        "https://*/*",
+        "http://*/*",
+        "file:///*",
     ],
     RiskLevel.CRITICAL: [
         ChromePermission.COOKIES,
@@ -78,9 +81,8 @@ permissions_risk_map = {
         ChromePermission.WEB_REQUEST,
         ChromePermission.DECLARATIVE_WEB_REQUEST,
         "<all_urls>",
-        "https://*/*",
-        "http://*/*",
-        "*://*/*file:///*",
+        "*://*/:",
+        "*://*/*",
     ],
 }
 

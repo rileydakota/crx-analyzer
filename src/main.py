@@ -1,7 +1,6 @@
 import click
-import rich
 import pprint
-import json
+from rich.console import Console
 from extensions.extension import Extension, Browser
 from extensions.risk import get_risk_report
 
@@ -28,10 +27,10 @@ def cli(id, browser, output):
 
     match output:
         case "pretty":
-            console = rich.console()
+            console = Console()
             console.print(report)
         case "json":
-            pprint.pprint(json.dumps(report))
+            pprint.pprint(report.model_dump(mode="json"))
 
     # print(extension.name)
     # print(extension.version)
