@@ -273,6 +273,7 @@ class PermissionRiskMapping(BaseModel):
 
 class RiskReport(BaseModel):
     name: str
+    sha256: str
     metadata: dict[str, Any]
     risk_score: int
     permissions: List[PermissionRiskMapping]

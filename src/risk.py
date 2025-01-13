@@ -116,6 +116,7 @@ def get_risk_report(extension: Extension) -> RiskReport:
 
     return RiskReport(
         name=extension.name,
+        sha256=extension.sha256,
         metadata={},
         javascript_files=extension.javascript_files,
         urls=extension.urls,
