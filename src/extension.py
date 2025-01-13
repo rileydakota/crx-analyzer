@@ -106,11 +106,12 @@ class Extension:
 
     @property
     def javascript_files(self) -> list[str]:
-        return [
-            os.path.join(self.extension_dir_path, file)
-            for file in os.listdir(self.extension_dir_path)
-            if file.endswith(".js")
-        ]
+        js_files = []
+        for root, _, files in os.walk(self.extension_dir_path):
+            for file in files:
+                if file.endswith(".js"):
+                    js_files.append(os.path.join(root, file))
+        return js_files
 
     @property
     def urls(self) -> list[str]:
@@ -124,3 +125,16 @@ class Extension:
                 urls.update(found_urls)
 
         return list(urls)
+
+    # @property
+    # def fetch_calls(self) -> list[str]:
+    #     fetch_calls = set()
+    #     fetch_pattern = r'fetch\s*\(\s*[\'"]([^\'"]+)[\'"]'
+
+    #     for js_file in self.javascript_files:
+    #         with open(js_file, "r", encoding="utf-8", errors="ignore") as f:
+    #             content = f.read()
+    #             found_fetch_calls = re.findall(fetch_pattern, content)
+    #             fetch_calls.update(found_fetch_calls)
+
+    #     return list(fetch_calls)
