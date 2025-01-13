@@ -91,6 +91,10 @@ class Extension:
         return self.manifest.manifest_version
 
     @property
+    def author(self) -> str:
+        return self.manifest.author
+
+    @property
     def permissions(self) -> list[str]:
         match self.manifest_version:
             case 2:
