@@ -95,6 +95,10 @@ class Extension:
         return self.manifest.author
 
     @property
+    def homepage_url(self) -> str:
+        return self.manifest.homepage_url
+
+    @property
     def permissions(self) -> list[str]:
         match self.manifest_version:
             case 2:

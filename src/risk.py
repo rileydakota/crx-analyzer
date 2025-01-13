@@ -123,4 +123,5 @@ def get_risk_report(extension: Extension) -> RiskReport:
         fetch_calls=[],
         risk_score=risk_score,
         permissions=permissions_risk,
+        # raw_manifest=extension.manifest.json()
     )

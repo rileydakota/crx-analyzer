@@ -59,6 +59,7 @@ def cli(id, browser, output):
             metadata_table.add_column("Value")
             metadata_table.add_row("Name", extension.name)
             metadata_table.add_row("Author", extension.author)
+            metadata_table.add_row("Homepage", extension.homepage_url)
             metadata_table.add_row("Version", extension.version)
             metadata_table.add_row("Manifest Version", str(extension.manifest_version))
             metadata_table.add_row("Risk Score", f"{report.risk_score}/100")
