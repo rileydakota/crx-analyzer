@@ -29,7 +29,7 @@ def test_edge_extension_download(mock_download):
             extension.sha256
             == "f4396645d06777cb879406c3226cb69b60fc923baff1868fb5db4588ef0e07e6"
         )
-        assert extension.javascript_files == [
+        assert  sorted(extension.javascript_files) == sorted([
             "tmp/nnkgneoiohoecpdiaponcejilbhhikei/background.bundle.js",
             "tmp/nnkgneoiohoecpdiaponcejilbhhikei/page.bundle.js",
             "tmp/nnkgneoiohoecpdiaponcejilbhhikei/window.bundle.js",
@@ -40,6 +40,7 @@ def test_edge_extension_download(mock_download):
             "tmp/nnkgneoiohoecpdiaponcejilbhhikei/remote.bundle.js",
             "tmp/nnkgneoiohoecpdiaponcejilbhhikei/devpanel.bundle.js",
         ]
+        )
         # Verify manifest was parsed correctly
         assert extension.manifest is not None
         assert extension.manifest.name == "Redux DevTools"
