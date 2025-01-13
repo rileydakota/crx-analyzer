@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from src.extensions.models import (
+from src.models import (
     BackgroundConfig,
     ChromeManifest,
     IncognitoMode,
@@ -65,7 +65,7 @@ def test_invalid_incognito_mode():
 
 test_cases = [
     (
-        "test/extensions/test_manifests/manifest_edge_redux.json",
+        "test/test_manifests/manifest_edge_redux.json",
         {
             "name": "Redux DevTools",
             "version": "3.2.7",
@@ -81,7 +81,7 @@ test_cases = [
         },
     ),
     (
-        "test/extensions/test_manifests/manifest_edge_redux_v2.json",
+        "test/test_manifests/manifest_edge_redux_v2.json",
         {
             "name": "Redux DevTools",
             "version": "3.1.6",
@@ -104,7 +104,7 @@ test_cases = [
         },
     ),
     (
-        "test/extensions/test_manifests/manifest_chrome_redux.json",
+        "test/test_manifests/manifest_chrome_redux.json",
         {
             "name": "Redux DevTools",
             "version": "3.2.7",
@@ -120,7 +120,7 @@ test_cases = [
         },
     ),
     (
-        "test/extensions/test_manifests/manifest_malicious_poc.json",
+        "test/test_manifests/manifest_malicious_poc.json",
         {
             "name": "Hello Extensions",
             "version": "1.0",
@@ -135,7 +135,7 @@ test_cases = [
         },
     ),
     (
-        "test/extensions/test_manifests/manifest_edge_example.json",
+        "test/test_manifests/manifest_edge_example.json",
         {
             "name": "NASA picture of the day viewer",
             "version": "0.0.0.1",
@@ -150,7 +150,7 @@ test_cases = [
         },
     ),
     (
-        "test/extensions/test_manifests/manifest_pixiv_batch_downloader.json",
+        "test/test_manifests/manifest_pixiv_batch_downloader.json",
         {
             "name": "Powerful Pixiv Downloader",
             "version": "17.3.1",
@@ -167,7 +167,7 @@ test_cases = [
         },
     ),
     (
-        "test/extensions/test_manifests/manifest_chrome_vite.json",
+        "test/test_manifests/manifest_chrome_vite.json",
         {
             "name": "name in manifest.json",
             "manifest_version": 3,

@@ -1,8 +1,8 @@
 import click
 import pprint
 from rich.console import Console
-from extensions.extension import Extension, Browser
-from extensions.risk import get_risk_report
+from extension import Extension, Browser
+from risk import get_risk_report
 
 
 @click.command(name="crx-analysis")

@@ -6,9 +6,8 @@ import hashlib
 import re
 
 from enum import Enum
-
-from extensions import download
-from extensions.models import ChromeManifest
+import download
+from models import ChromeManifest
 
 
 class Browser(Enum):
