@@ -1,5 +1,11 @@
 from typing import Union
-from extensions.models import ChromePermission, RiskLevel
+from extensions.models import (
+    ChromePermission,
+    RiskLevel,
+    RiskReport,
+    PermissionRiskMapping,
+)
+from extensions.extension import Extension
 
 
 # credit to https://crxcavator.io/docs.html#/risk_breakdown?id=permissions-breakdown
@@ -78,9 +84,39 @@ permissions_risk_map = {
     ],
 }
 
+risk_score_map = {
+    RiskLevel.NONE: 0,
+    RiskLevel.LOW: 5,
+    RiskLevel.MEDIUM: 10,
+    RiskLevel.HIGH: 15,
+    RiskLevel.CRITICAL: 45,
+}
+
+
+def get_risk_score(risk_level: RiskLevel) -> int:
+    return risk_score_map[risk_level]
+
 
 def get_risk_level(permission: Union[ChromePermission, str]) -> RiskLevel:
     for risk_level, permission_list in permissions_risk_map.items():
         if permission in permission_list:
             return risk_level
     return RiskLevel.NONE
+
+
+def get_risk_report(extension: Extension) -> RiskReport:
+    permissions_risk = [
+        PermissionRiskMapping(permission=x, risk_level=get_risk_level(x))
+        for x in extension.permissions
+    ]
+    risk_score = min(100, sum(get_risk_score(p.risk_level) for p in permissions_risk))
+
+    return RiskReport(
+        name=extension.name,
+        metadata={},
+        javascript_files=extension.javascript_files,
+        urls=[],
+        fetch_calls=[],
+        risk_score=risk_score,
+        permissions=permissions_risk,
+    )

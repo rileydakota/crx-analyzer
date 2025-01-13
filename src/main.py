@@ -1,8 +1,12 @@
 import click
+import rich
+import pprint
+import json
 from extensions.extension import Extension, Browser
+from extensions.risk import get_risk_report
 
 
-@click.command()
+@click.command(name="crx-analysis")
 @click.option("--id", type=str, help="The ID of the extension to check", required=True)
 @click.option(
     "--browser",
@@ -20,12 +24,21 @@ from extensions.extension import Extension, Browser
 def cli(id, browser, output):
     browser_enum = Browser(browser)
     extension = Extension(id, browser_enum)
-    print(extension.name)
-    print(extension.version)
-    print(extension.manifest_version)
-    print(extension.permissions)
-    print(extension.javascript_files)
-    print(extension.urls)
+    report = get_risk_report(extension)
+
+    match output:
+        case "pretty":
+            console = rich.console()
+            console.print(report)
+        case "json":
+            pprint.pprint(json.dumps(report))
+
+    # print(extension.name)
+    # print(extension.version)
+    # print(extension.manifest_version)
+    # print(extension.permissions)
+    # print(extension.javascript_files)
+    # print(extension.urls)
 
 
 if __name__ == "__main__":
