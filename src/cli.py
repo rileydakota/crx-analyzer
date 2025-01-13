@@ -22,8 +22,8 @@ from risk import get_risk_report
 )
 def cli(id, browser, output):
     browser_enum = Browser(browser)
-    extension = Extension(id, browser_enum)
-    report = get_risk_report(extension)
+    with Extension(id, browser_enum) as extension:
+        report = get_risk_report(extension)
 
     match output:
         case "pretty":
