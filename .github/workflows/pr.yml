@@ -8,8 +8,10 @@ on:
     branches: [ main ]
 
 permissions:
-  pull-requests: write
-  contents: write
+    pull-requests: write
+    contents: write
+    actions: read
+    checks: write
 
 jobs:
   test_unit:
