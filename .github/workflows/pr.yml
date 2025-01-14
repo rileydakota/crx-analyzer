@@ -85,7 +85,6 @@ jobs:
         run: |
           sudo apt-get install jq -y
       - name: install termshot
-      - name: download termshot
         run: |
           wget https://github.com/homeport/termshot/releases/download/v0.4.1/termshot_0.4.1_linux_amd64.tar.gz
           tar xzf termshot_0.4.1_linux_amd64.tar.gz
