@@ -7,6 +7,7 @@ requires-python = ">=3.10"
 dependencies = [
     "pydantic>=2.10.5",
     "requests>=2.32.3",
+    "rich>=13.9.4",
 ]
 
 [dependency-groups]
@@ -22,3 +23,6 @@ dev = [
 pythonpath = [
     "."
 ]
+
+[project.scripts]
+crx-analyzer = "src.cli:cli"

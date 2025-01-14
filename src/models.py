@@ -89,12 +89,13 @@ class ChromePermission(str, Enum):
     DECLARATIVE_NET_REQUEST = "declarativeNetRequest"
     DECLARATIVE_NET_REQUEST_WITH_HOST_ACCESS = "declarativeNetRequestWithHostAccess"
     DECLARATIVE_NET_REQUEST_FEEDBACK = "declarativeNetRequestFeedback"
-
+    DECLARATIVE_WEB_REQUEST = "declarativeWebRequest"
+    EXPERIMENTAL = "experimental"
     # System Features
     DNS = "dns"
     DESKTOP_CAPTURE = "desktopCapture"
     DOCUMENT_SCAN = "documentScan"
-
+    DISPLAY_SOURCE = "displaySource"
     # Downloads
     DOWNLOADS = "downloads"
     DOWNLOADS_OPEN = "downloads.open"
@@ -226,7 +227,7 @@ class ChromeManifest(BaseModel):
     externally_connectable: Optional[ExternallyConnectable] = None
     file_browser_handlers: Optional[List[Any]] = None
     file_system_provider_capabilities: Optional[FileSystemProviderCapabilities] = None
-    homepage_url: Optional[HttpUrl] = None
+    homepage_url: Optional[str] = None
     host_permissions: Optional[List[str]] = None
     import_: Optional[List[ImportConfig]] = Field(None, alias="import")
     incognito: Optional[IncognitoMode] = None
@@ -255,3 +256,28 @@ class ChromeManifest(BaseModel):
     update_url: Optional[HttpUrl] = None
     version_name: Optional[str] = None
     web_accessible_resources: Optional[List[Union[Dict[str, Any], str]]] = None
+
+
+class RiskLevel(str, Enum):
+    NONE = "none"
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    CRITICAL = "critical"
+
+
+class PermissionRiskMapping(BaseModel):
+    permission: Union[ChromePermission, str]
+    risk_level: RiskLevel
+
+
+class RiskReport(BaseModel):
+    name: str
+    sha256: str
+    metadata: dict[str, Any]
+    risk_score: int
+    permissions: List[PermissionRiskMapping]
+    javascript_files: List[str]
+    urls: List[str]
+    fetch_calls: List[str]
+    # raw_manifest: str

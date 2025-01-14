@@ -1,0 +1,7 @@
+rules:
+- id: fetch-call-detection
+  pattern: |
+    fetch(...)
+  message: "Detected fetch API call"
+  languages: [javascript, typescript]
+  severity: WARNING

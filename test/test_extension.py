@@ -1,23 +1,20 @@
 import os
 import shutil
 from unittest.mock import patch
-
-from src.extensions.extension import Extension, Browser
+from src.extension import Extension, Browser
 
 
 def mock_download_extension(url: str, output_path: str) -> None:
     test_crx_path = os.path.join(
         "test",
-        "extensions",
         "test_extension_zip",
         "nnkgneoiohoecpdiaponcejilbhhikei.crx",
     )
     shutil.copyfile(test_crx_path, output_path)
 
 
-@patch(
-    "src.extensions.download.download_extension", side_effect=mock_download_extension
-)
+# TODO: Verify if this is properly working
+@patch("src.download.download_extension", side_effect=mock_download_extension)
 def test_edge_extension_download(mock_download):
     extension_id = "nnkgneoiohoecpdiaponcejilbhhikei"
 

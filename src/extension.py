@@ -3,10 +3,16 @@ import json
 import zipfile
 import shutil
 import hashlib
-from enum import Enum
+import re
 
-import src.extensions.download as download
-from src.extensions.models import ChromeManifest
+from enum import Enum
+from requests import HTTPError
+import download
+from models import ChromeManifest
+
+
+class InvalidExtensionIDError(Exception):
+    pass
 
 
 class Browser(Enum):
@@ -31,8 +37,19 @@ class Extension:
                 self.download_url = download.get_chrome_extension_url(self.extension_id)
             case Browser.EDGE:
                 self.download_url = download.get_edge_extension_url(self.extension_id)
+            case _:
+                raise ValueError(f"Invalid browser: {self.browser}")
+        try:
+            self.__download_extension()
+        except HTTPError as e:
+            match e.response.status_code:
+                case 404:
+                    raise InvalidExtensionIDError(
+                        f"403: Extension ID {self.extension_id} not found. Requested URL: {e.request.url}"
+                    )
+                case _:
+                    raise e
 
-        self.__download_extension()
         self.sha256 = hashlib.sha256(
             open(self.extension_zip_path, "rb").read()
         ).hexdigest()
@@ -74,6 +91,14 @@ class Extension:
         return self.manifest.manifest_version
 
     @property
+    def author(self) -> str:
+        return self.manifest.author
+
+    @property
+    def homepage_url(self) -> str:
+        return self.manifest.homepage_url
+
+    @property
     def permissions(self) -> list[str]:
         match self.manifest_version:
             case 2:
@@ -89,8 +114,35 @@ class Extension:
 
     @property
     def javascript_files(self) -> list[str]:
-        return [
-            os.path.join(self.extension_dir_path, file)
-            for file in os.listdir(self.extension_dir_path)
-            if file.endswith(".js")
-        ]
+        js_files = []
+        for root, _, files in os.walk(self.extension_dir_path):
+            for file in files:
+                if file.endswith(".js"):
+                    js_files.append(os.path.join(root, file))
+        return js_files
+
+    @property
+    def urls(self) -> list[str]:
+        urls = set()
+        url_pattern = r'https?://[^\s<>"\']+'
+
+        for js_file in self.javascript_files:
+            with open(js_file, "r", encoding="utf-8", errors="ignore") as f:
+                content = f.read()
+                found_urls = re.findall(url_pattern, content)
+                urls.update(found_urls)
+
+        return list(urls)
+
+    # @property
+    # def fetch_calls(self) -> list[str]:
+    #     fetch_calls = set()
+    #     fetch_pattern = r'fetch\s*\(\s*[\'"]([^\'"]+)[\'"]'
+
+    #     for js_file in self.javascript_files:
+    #         with open(js_file, "r", encoding="utf-8", errors="ignore") as f:
+    #             content = f.read()
+    #             found_fetch_calls = re.findall(fetch_pattern, content)
+    #             fetch_calls.update(found_fetch_calls)
+
+    #     return list(fetch_calls)
