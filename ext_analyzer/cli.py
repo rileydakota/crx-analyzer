@@ -1,9 +1,9 @@
 import click
 from rich.console import Console
 from rich.table import Table
-from extension import Extension, Browser
-from risk import get_risk_report
-from models import RiskLevel
+from .extension import Extension, Browser
+from .risk import get_risk_report
+from .models import RiskLevel
 
 
 @click.command(name="crx-analysis")

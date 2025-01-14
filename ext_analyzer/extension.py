@@ -7,8 +7,8 @@ import re
 
 from enum import Enum
 from requests import HTTPError
-import download
-from models import ChromeManifest
+from . import download
+from .models import ChromeManifest
 
 
 class InvalidExtensionIDError(Exception):

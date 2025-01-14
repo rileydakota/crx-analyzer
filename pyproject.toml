@@ -25,7 +25,7 @@ pythonpath = [
 ]
 
 [project.scripts]
-crx-analyzer = "src.cli:cli"
+crx-analyzer = "ext_analyzer.cli:cli"
 
 [build-system]
 requires = ["hatchling"]

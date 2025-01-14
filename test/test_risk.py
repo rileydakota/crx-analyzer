@@ -1,5 +1,5 @@
-from src.risk import get_risk_level
-from src.models import ChromePermission, RiskLevel
+from ext_analyzer.risk import get_risk_level
+from ext_analyzer.models import ChromePermission, RiskLevel
 
 
 def test_permission_risk_level():

@@ -1,11 +1,11 @@
 from typing import Union
-from models import (
+from .models import (
     ChromePermission,
     RiskLevel,
     RiskReport,
     PermissionRiskMapping,
 )
-from extension import Extension
+from .extension import Extension
 
 
 # credit to https://crxcavator.io/docs.html#/risk_breakdown?id=permissions-breakdown
