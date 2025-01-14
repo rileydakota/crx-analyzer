@@ -47,23 +47,23 @@ jobs:
             repo: context.repo.repo,
             body: body
           });
-    test-cli:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v4
-        - name: Set up Python
-          uses: actions/setup-python@v5
-          with:
-            python-version: ${{ env.PYTHON_VERSION }}
-        - name: Install uv
-          uses: astral-sh/setup-uv@v5
-        - name: build
-          run: |
-            uv run build
-        - name: install cli
-          run: |
-            uv run pip install dist/ext_analyzer-0.1.0-py3-none-any.whl
-        - name: run cli
-          run: |
-            uv run crx-analyzer --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output json
-            uv run crx-analyzer --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output json
+  test_cli:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: build
+        run: |
+          uv run build
+      - name: install cli
+        run: |
+          uv run pip install dist/ext_analyzer-0.1.0-py3-none-any.whl
+      - name: run cli
+        run: |
+          uv run crx-analyzer --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output json
+          uv run crx-analyzer --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output json
