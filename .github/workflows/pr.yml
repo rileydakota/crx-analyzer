@@ -59,7 +59,7 @@ jobs:
         uses: astral-sh/setup-uv@v5
       - name: build
         run: |
-          uv run build
+          uv build
       - name: install cli
         run: |
           uv run pip install dist/ext_analyzer-0.1.0-py3-none-any.whl
