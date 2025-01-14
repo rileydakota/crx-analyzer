@@ -1,7 +1,5 @@
 # crx-analyzer
 
-[![asciicast](https://asciinema.org/a/yXQdmiASXWoKaNYwLydAsuY18.svg)](https://asciinema.org/a/yXQdmiASXWoKaNYwLydAsuY18)
-
 crx-analyzer is a Python tool for analyzing browser extensions through a risk management lens. It is designed to help you understand the risks associated with a browser extension, and enable you to make informed decisions about whether to use it. In addition, it can also be used to aid analysts in hunting for potentially malicious extensions.
 
 crx-analyzer was inspired by the [crxcavator](https://crxcavator.io/docs.html#/) tool, and uses some of the same risk scoring techniques, but is focuesd on providing a local, open source implementation that won't have the risk of being taken down/no longer hosted.
