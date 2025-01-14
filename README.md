@@ -1,12 +1,12 @@
 # crx-analyzer
 
-crx-analyzer is a Python tool for analyzing browser extensions through a risk management lens. It is designed to help you understand the risks associated with a browser extension, and enable you to make informed decisions about whether to use it. In addition, it can also be used to aid analysts in hunting for potentially malicious extensions.
+crx-analyzer is a Python tool for analyzing browser extensions through a risk management lens. It is designed to help you understand the risks associated with a browser extension and enable you to make informed decisions about whether to use it. In addition, it can also be used to aid analysts in hunting for potentially malicious extensions.
 
-crx-analyzer was inspired by the [crxcavator](https://crxcavator.io/docs.html#/) tool, and uses some of the same risk scoring techniques, but is focuesd on providing a local, open source implementation that won't have the risk of being taken down/no longer hosted.
+crx-analyzer was inspired by the [crxcavator](https://crxcavator.io/docs.html#/) tool and uses some of the same risk scoring techniques, but is focused on providing a local, open source implementation that won't have the risk of being taken down/no longer hosted.
 
-The toolworks by downloading the zipped extension file (crx) from the respective browser's extension store, and then extracting the files to a temporary directory. It parses the manifest.json file to get the extension's permissions, and then uses basic pattern matching to extract URLs that are referenced in the extension's code
+The tool works by downloading the zipped extension file (crx) from the respective browser's extension store and then extracting the files to a temporary directory. It parses the manifest.json file to get the extension's permissions and then uses basic pattern matching to extract URLs that are referenced in the extension's code.
 
-crx-analyzer can be used by an analyst, and supports a "pretty" output mode to accomodate this. crx-analyzer also supports a "json" output mode that allows for flexible usage in other tools, or even in a CI/CD pipeline.
+crx-analyzer can be used by an analyst and supports a "pretty" output mode to accommodate this. crx-analyzer also supports a "json" output mode that allows for flexible usage in other tools or even in a CI/CD pipeline.
 
 # Installation
 
