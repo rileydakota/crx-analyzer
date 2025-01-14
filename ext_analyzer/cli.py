@@ -70,7 +70,7 @@ def cli(id, browser, output):
             grid.add_column(justify="right")
             grid.add_row(metadata_table, permissions_table)
 
-            console = Console()
+            console = Console(force_terminal=True)
             console.print("\n")
             console.print(
                 f"[bold blue reverse]{browser} extension analysis for extesnion id {id}",

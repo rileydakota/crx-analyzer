@@ -1,0 +1,119 @@
+name: Pull Request Tests
+
+env:
+  PYTHON_VERSION: "3.10"
+
+on:
+  pull_request:
+    branches: [ main ]
+
+permissions:
+    pull-requests: write
+    contents: write
+    actions: read
+    checks: write
+
+jobs:
+  test_unit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+
+    - name: Run tests
+      run: |
+        uv run pytest test/ > pytest-results.txt
+
+    - name: Comment PR with test results
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const fs = require('fs');
+          const testResults = fs.readFileSync('pytest-results.txt', 'utf8');
+          const body = `### Test Results
+          \`\`\`
+          ${testResults}
+          \`\`\``;
+
+          // Get existing comments
+          const comments = await github.rest.issues.listComments({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo
+          });
+
+          // Look for an existing test results comment
+          const existingComment = comments.data.find(comment =>
+            comment.body.includes('### Test Results')
+          );
+
+          if (existingComment) {
+            // Update existing comment
+            await github.rest.issues.updateComment({
+              comment_id: existingComment.id,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+          } else {
+            // Create new comment
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+          }
+  test_e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: install jq
+        run: |
+          sudo apt-get install jq -y
+      - name: install termshot
+        run: |
+          wget https://github.com/homeport/termshot/releases/download/v0.4.1/termshot_0.4.1_linux_amd64.tar.gz
+          tar xzf termshot_0.4.1_linux_amd64.tar.gz
+          sudo mv termshot /usr/local/bin/
+          rm termshot_0.4.1_linux_amd64.tar.gz
+          termshot --help
+
+      - name: build
+        run: |
+          uv build
+      - name: install cli
+        run: |
+          uv run pip install dist/ext_analyzer-0.1.0-py3-none-any.whl
+      - name: run cli - json
+        run: |
+          uv run crx-analyzer --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output json | jq .
+          uv run crx-analyzer --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output json | jq .
+      - name: run cli - pretty
+        run: |
+          uv run crx-analyzer --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output pretty
+          uv run crx-analyzer --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output pretty
+    #       termshot --show-cmd --filename "chrome-pretty.png" -- "uv run crx-analyzer --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output pretty"
+    #   - name: Upload screenshots as artifacts
+    #     uses: actions/upload-artifact@v4
+    #     with:
+    #       name: extension-analysis-screenshots
+    #       path: |
+    #         edge-pretty.png
+    #         chrome-pretty.png
+
