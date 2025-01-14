@@ -12,7 +12,7 @@ permissions:
   contents: write
 
 jobs:
-  test:
+  test_unit:
     runs-on: ubuntu-latest
 
     steps:
@@ -71,7 +71,7 @@ jobs:
               body: body
             });
           }
-  test_cli:
+  test_e2e:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -84,6 +84,15 @@ jobs:
       - name: install jq
         run: |
           sudo apt-get install jq -y
+      - name: install termshot
+      - name: download termshot
+        run: |
+          wget https://github.com/homeport/termshot/releases/download/v0.4.1/termshot_0.4.1_linux_amd64.tar.gz
+          tar xzf termshot_0.4.1_linux_amd64.tar.gz
+          sudo mv termshot /usr/local/bin/
+          rm termshot_0.4.1_linux_amd64.tar.gz
+          termshot --help
+
       - name: build
         run: |
           uv build
