@@ -106,8 +106,8 @@ jobs:
           uv run crx-analyzer --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output json | jq .
       - name: run cli - pretty
         run: |
-          termshot --show-cmd --filename "edge-pretty.png" -- uv run crx-analyzer --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output pretty
-          termshot --show-cmd --filename "chrome-pretty.png" -- uv run crx-analyzer --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output pretty
+          termshot --show-cmd --filename "edge-pretty.png" -- "uv run crx-analyzer --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output pretty"
+          termshot --show-cmd --filename "chrome-pretty.png" -- "uv run crx-analyzer --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output pretty"
       - name: Upload screenshots as artifacts
         uses: actions/upload-artifact@v4
         with:
