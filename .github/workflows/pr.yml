@@ -107,48 +107,15 @@ jobs:
           termshot --show-cmd --filename "edge-pretty.png" -- uv run crx-analyzer --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output pretty
           termshot --show-cmd --filename "chrome-pretty.png" -- uv run crx-analyzer --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output pretty
       - name: Add screenshots to PR
-        uses: actions/github-script@v7
+        uses: edunad/actions-image@v2.0.0
         with:
-          script: |
-            const fs = require('fs');
+          path: './edge-pretty.png'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          title: 'Edge Extension Analysis pretty output'
+      - name: Add screenshots to PR
+        uses: edunad/actions-image@v2.0.0
+        with:
+          path: './chrome-pretty.png'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          title: 'Chrome Extension Analysis pretty output'
 
-            // Read the image files
-            const edgeImage = fs.readFileSync('edge-pretty.png', {encoding: 'base64'});
-            const chromeImage = fs.readFileSync('chrome-pretty.png', {encoding: 'base64'});
-
-            const body = `## Extension Analysis Screenshots
-
-            ### Edge Extension
-            ![Edge Extension Analysis](data:image/png;base64,${edgeImage})
-
-            ### Chrome Extension
-            ![Chrome Extension Analysis](data:image/png;base64,${chromeImage})`;
-
-            // Find existing comment
-            const comments = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number
-            });
-
-            const existingComment = comments.data.find(comment =>
-              comment.body.includes('Extension Analysis Screenshots')
-            );
-
-            if (existingComment) {
-              // Update existing comment
-              await github.rest.issues.updateComment({
-                comment_id: existingComment.id,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: body
-              });
-            } else {
-              // Create new comment
-              await github.rest.issues.createComment({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: body
-              });
-            }
