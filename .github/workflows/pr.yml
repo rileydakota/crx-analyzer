@@ -41,12 +41,36 @@ jobs:
           \`\`\`
           ${testResults}
           \`\`\``;
-          github.rest.issues.createComment({
+
+          // Get existing comments
+          const comments = await github.rest.issues.listComments({
             issue_number: context.issue.number,
             owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: body
+            repo: context.repo.repo
           });
+
+          // Look for an existing test results comment
+          const existingComment = comments.data.find(comment =>
+            comment.body.includes('### Test Results')
+          );
+
+          if (existingComment) {
+            // Update existing comment
+            await github.rest.issues.updateComment({
+              comment_id: existingComment.id,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+          } else {
+            // Create new comment
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+          }
   test_cli:
     runs-on: ubuntu-latest
     steps:
@@ -57,13 +81,20 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install uv
         uses: astral-sh/setup-uv@v5
+      - name: install jq
+        run: |
+          sudo apt-get install jq -y
       - name: build
         run: |
           uv build
       - name: install cli
         run: |
           uv run pip install dist/ext_analyzer-0.1.0-py3-none-any.whl
-      - name: run cli
+      - name: run cli - json
         run: |
-          uv run crx-analyzer --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output json
-          uv run crx-analyzer --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output json
+          uv run crx-analyzer --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output json | jq .
+          uv run crx-analyzer --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output json | jq .
+      - name: run cli - pretty
+        run: |
+          uv run crx-analyzer --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output pretty
+          uv run crx-analyzer --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output pretty
