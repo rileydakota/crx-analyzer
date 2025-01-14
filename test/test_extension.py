@@ -1,7 +1,8 @@
 import os
 import shutil
 from unittest.mock import patch
-from ext_analyzer.extension import Extension, Browser
+
+from ext_analyzer.extension import Browser, Extension
 
 
 def mock_download_extension(url: str, output_path: str) -> None:

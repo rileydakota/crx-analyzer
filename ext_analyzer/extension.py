@@ -1,12 +1,13 @@
-import os
-import json
-import zipfile
-import shutil
 import hashlib
+import json
+import os
 import re
-
+import shutil
+import zipfile
 from enum import Enum
+
 from requests import HTTPError
+
 from . import download
 from .models import ChromeManifest
 
