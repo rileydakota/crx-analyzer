@@ -67,6 +67,8 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
+          build-args: |
+            CRX_ANALYZER_VERSION=${{ github.event.release.tag_name }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
