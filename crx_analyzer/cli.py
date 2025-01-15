@@ -81,13 +81,13 @@ def analyze(id, browser, output):
 
             # Add both tables to grid
             grid.add_column(justify="left")
-            grid.add_column(justify="center")
+            grid.add_column(justify="right")
             grid.add_row(metadata_table, permissions_table)
 
             console = Console(force_terminal=True)
             console.print("\n")
             console.print(
-                f"[bold blue reverse white]{browser} extension analysis for extesnion id {id}",
+                f"[bold blue reverse white]{browser} extension analysis for extension id {id}",
                 justify="center",
             )
             console.print("\n" * 3)
