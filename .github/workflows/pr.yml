@@ -29,6 +29,8 @@ jobs:
       uses: astral-sh/setup-uv@v5
 
     - name: Run tests
+      id: run_tests
+      continue-on-error: true
       run: |
         uv run pytest test/ > pytest-results.txt
 
