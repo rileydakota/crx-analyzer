@@ -25,6 +25,11 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install uv
         uses: astral-sh/setup-uv@v5
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: update version to match tag
+        run: sed -i 's/^version = ".*"$/version = $RELEASE_VERSION/' pyproject.toml && uv lock
+
       - name: uv build
         run: uv build
       - name: Publish package distributions to PyPI

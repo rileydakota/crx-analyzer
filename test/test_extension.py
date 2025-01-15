@@ -1,7 +1,7 @@
 import os
 import shutil
 from unittest.mock import patch
-from ext_analyzer.extension import Extension, Browser
+from crx_analyzer.extension import Extension, Browser
 
 
 def mock_download_extension(url: str, output_path: str) -> None:
@@ -14,7 +14,7 @@ def mock_download_extension(url: str, output_path: str) -> None:
 
 
 # TODO: Verify if this is properly working
-@patch("ext_analyzer.download.download_extension", side_effect=mock_download_extension)
+@patch("crx_analyzer.download.download_extension", side_effect=mock_download_extension)
 def test_edge_extension_download(mock_download):
     extension_id = "nnkgneoiohoecpdiaponcejilbhhikei"
 

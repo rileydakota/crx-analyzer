@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from ext_analyzer.models import (
+from crx_analyzer.models import (
     BackgroundConfig,
     ChromeManifest,
     IncognitoMode,
