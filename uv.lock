@@ -146,7 +146,7 @@ wheels = [
 
 [[package]]
 name = "crx-analyzer"
-version = "0.1.0"
+version = "0.1.0a3"
 source = { editable = "." }
 dependencies = [
     { name = "pydantic" },

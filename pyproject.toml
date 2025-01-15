@@ -1,6 +1,6 @@
 [project]
 name = "crx-analyzer"
-version = "0.1.0-alpha.2"
+version = "v0.1.0-alpha.3"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
