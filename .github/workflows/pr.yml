@@ -29,6 +29,8 @@ jobs:
       uses: astral-sh/setup-uv@v5
 
     - name: Run tests
+      id: run_tests
+      continue-on-error: true
       run: |
         uv run pytest test/ > pytest-results.txt
 
@@ -99,15 +101,15 @@ jobs:
           uv build
       - name: install cli
         run: |
-          uv run pip install dist/ext_analyzer-0.1.0-py3-none-any.whl
+          uv run pip install dist/crx_analyzer-0.1.0a3-py3-none-any.whl
       - name: run cli - json
         run: |
-          uv run crx-analyzer --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output json | jq .
-          uv run crx-analyzer --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output json | jq .
+          uv run crx-analyzer analyze --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output json | jq .
+          uv run crx-analyzer analyze --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output json | jq .
       - name: run cli - pretty
         run: |
-          uv run crx-analyzer --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output pretty
-          uv run crx-analyzer --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output pretty
+          uv run crx-analyzer analyze --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output pretty
+          uv run crx-analyzer analyze --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output pretty
     #       termshot --show-cmd --filename "chrome-pretty.png" -- "uv run crx-analyzer --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output pretty"
     #   - name: Upload screenshots as artifacts
     #     uses: actions/upload-artifact@v4
