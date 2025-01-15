@@ -1,0 +1,24 @@
+{
+    "action": {
+       "default_icon": "128.png"
+    },
+    "author": "gamebol",
+    "background": {
+       "service_worker": "background.js"
+    },
+    "content_security_policy": {
+       "extension_pages": "script-src 'self'; object-src 'self';"
+    },
+    "default_locale": "en",
+    "description": "__MSG_appDesc__",
+    "icons": {
+       "128": "128.png"
+    },
+    "manifest_version": 3,
+    "name": "__MSG_appName__",
+    "sandbox": {
+       "pages": [ "Game_Source/index.html" ]
+    },
+    "update_url": "https://clients2.google.com/service/update2/crx",
+    "version": "2"
+ }

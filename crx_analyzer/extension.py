@@ -124,13 +124,18 @@ class Extension:
     @property
     def urls(self) -> list[str]:
         urls = set()
-        url_pattern = r'https?://[^\s<>"\']+'
+        patterns = [
+            r'file://[^\s<>"\']+',
+            r'https?://[^\s<>"\']+',
+            r'http?://[^\s<>"\']+',
+        ]
 
         for js_file in self.javascript_files:
             with open(js_file, "r", encoding="utf-8", errors="ignore") as f:
                 content = f.read()
-                found_urls = re.findall(url_pattern, content)
-                urls.update(found_urls)
+                for pattern in patterns:
+                    found_urls = re.findall(pattern, content)
+                    urls.update(found_urls)
 
         return list(urls)
 

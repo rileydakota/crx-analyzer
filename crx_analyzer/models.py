@@ -247,7 +247,7 @@ class ChromeManifest(BaseModel):
     platforms: Optional[Any] = None
     replacement_web_app: Optional[Any] = None
     requirements: Optional[Dict[str, Any]] = None
-    sandbox: Optional[List[str]] = None
+    sandbox: Optional[Dict[Any, Any]] = None
     short_name: Optional[str] = None
     side_panel: Optional[SidePanel] = None
     storage: Optional[Storage] = None

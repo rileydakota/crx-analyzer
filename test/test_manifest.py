@@ -65,6 +65,25 @@ def test_invalid_incognito_mode():
 
 test_cases = [
     (
+        "test/test_manifests/manifest_chrome_shooting_game.json",
+        {
+            "manifest_version": 3,
+            "name": "__MSG_appName__",
+            "version": "2",
+            "action": {"default_icon": "128.png"},
+            "author": "gamebol",
+            "background": {"service_worker": "background.js"},
+            "content_security_policy": {
+                "extension_pages": "script-src 'self'; object-src 'self';"
+            },
+            "default_locale": "en",
+            "description": "__MSG_appDesc__",
+            "icons": {"128": "128.png"},
+            "sandbox": {"pages": ["Game_Source/index.html"]},
+            "update_url": "https://clients2.google.com/service/update2/crx",
+        },
+    ),
+    (
         "test/test_manifests/manifest_edge_redux.json",
         {
             "name": "Redux DevTools",
