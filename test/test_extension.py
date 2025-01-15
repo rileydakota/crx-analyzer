@@ -12,7 +12,7 @@ def mock_download_extension(url: str, output_path: str) -> None:
     shutil.copyfile(test_crx_path, output_path)
 
 
-def test_edge_extension_download(monkeypatch):
+def test_extension_download(monkeypatch):
     monkeypatch.setattr(
         "crx_analyzer.download.download_extension", mock_download_extension
     )
