@@ -7,7 +7,7 @@ def mock_download_extension(url: str, output_path: str) -> None:
     test_crx_path = os.path.join(
         "test",
         "test_extension_zip",
-        "test_nnkgneoiohoecpdiaponcejilbhhikei.crx",
+        "test_edge_nnkgneoiohoecpdiaponcejilbhhikei.crx",
     )
     shutil.copyfile(test_crx_path, output_path)
 
