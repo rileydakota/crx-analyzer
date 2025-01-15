@@ -1,6 +1,5 @@
 import os
 import shutil
-from unittest.mock import patch
 from crx_analyzer.extension import Extension, Browser
 
 
@@ -8,15 +7,17 @@ def mock_download_extension(url: str, output_path: str) -> None:
     test_crx_path = os.path.join(
         "test",
         "test_extension_zip",
-        "nnkgneoiohoecpdiaponcejilbhhikei.crx",
+        "test_nnkgneoiohoecpdiaponcejilbhhikei.crx",
     )
     shutil.copyfile(test_crx_path, output_path)
 
 
-# TODO: Verify if this is properly working
-@patch("crx_analyzer.download.download_extension", side_effect=mock_download_extension)
-def test_edge_extension_download(mock_download):
-    extension_id = "nnkgneoiohoecpdiaponcejilbhhikei"
+def test_edge_extension_download(monkeypatch):
+    monkeypatch.setattr(
+        "crx_analyzer.download.download_extension", mock_download_extension
+    )
+
+    extension_id = "fake"
 
     with Extension(extension_id, Browser.EDGE) as extension:
         # Verify files were downloaded and extracted
@@ -28,15 +29,15 @@ def test_edge_extension_download(mock_download):
         )
         assert sorted(extension.javascript_files) == sorted(
             [
-                "tmp/nnkgneoiohoecpdiaponcejilbhhikei/background.bundle.js",
-                "tmp/nnkgneoiohoecpdiaponcejilbhhikei/page.bundle.js",
-                "tmp/nnkgneoiohoecpdiaponcejilbhhikei/window.bundle.js",
-                "tmp/nnkgneoiohoecpdiaponcejilbhhikei/devtools.bundle.js",
-                "tmp/nnkgneoiohoecpdiaponcejilbhhikei/pagewrap.bundle.js",
-                "tmp/nnkgneoiohoecpdiaponcejilbhhikei/options.bundle.js",
-                "tmp/nnkgneoiohoecpdiaponcejilbhhikei/content.bundle.js",
-                "tmp/nnkgneoiohoecpdiaponcejilbhhikei/remote.bundle.js",
-                "tmp/nnkgneoiohoecpdiaponcejilbhhikei/devpanel.bundle.js",
+                "tmp/fake/background.bundle.js",
+                "tmp/fake/page.bundle.js",
+                "tmp/fake/window.bundle.js",
+                "tmp/fake/devtools.bundle.js",
+                "tmp/fake/pagewrap.bundle.js",
+                "tmp/fake/options.bundle.js",
+                "tmp/fake/content.bundle.js",
+                "tmp/fake/remote.bundle.js",
+                "tmp/fake/devpanel.bundle.js",
             ]
         )
         # Verify manifest was parsed correctly
