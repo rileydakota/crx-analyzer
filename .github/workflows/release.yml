@@ -1,0 +1,40 @@
+name: Upload Python Package
+
+env:
+  PYTHON_VERSION: "3.10"
+
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  publish_pypi:
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/crx-analyzer
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: uv build
+        run: uv build
+      - name: Sign the dists with Sigstore
+        uses: sigstore/gh-action-sigstore-python@v3.0.0
+        with:
+          inputs: >-
+            ./dist/*.tar.gz
+      - name: Publish to PyPI
+        run: uv publish --trusted-publishing
+      - name: Upload artifacts to release
+        uses: softprops/action-gh-release@v1
+        run: gh release upload ${{ github.event.release.tag_name }} dist/*
+
