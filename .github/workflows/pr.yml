@@ -18,8 +18,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: step-security/harden-runner@446798f8213ac2e75931c1b0769676d927801858 # v2.10.3
+      with:
+        egress-policy: audit
     - uses: actions/checkout@v4
-
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
@@ -79,6 +81,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: step-security/harden-runner@446798f8213ac2e75931c1b0769676d927801858 # v2.10.3
+        with:
+          egress-policy: audit
       - name: Set up Python
         uses: actions/setup-python@v5
         with:

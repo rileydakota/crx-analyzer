@@ -23,6 +23,9 @@ jobs:
       attestations: write
     steps:
       - uses: actions/checkout@v4
+      - uses: step-security/harden-runner@446798f8213ac2e75931c1b0769676d927801858 # v2.10.3
+        with:
+          egress-policy: audit
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -51,8 +54,10 @@ jobs:
       packages: write
       attestations: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: step-security/harden-runner@446798f8213ac2e75931c1b0769676d927801858 # v2.10.3
+        with:
+          egress-policy: audit
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
