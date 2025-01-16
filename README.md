@@ -1,5 +1,4 @@
 # crx-analyzer
-[![PyPI version](https://badge.fury.io/py/crx-analyzer.svg)](https://badge.fury.io/py/crx-analyzer)
 ![GitHub Container Registry](https://ghcr-badge.egpl.dev/rileydakota/crx-analyzer/latest_tag?color=%2344cc11&ignore=latest&label=version&trim=true)
 
 ![crx-analyzer](./img/crx-analyzer.png)
