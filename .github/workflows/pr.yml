@@ -88,14 +88,6 @@ jobs:
       - name: install jq
         run: |
           sudo apt-get install jq -y
-      - name: install termshot
-        run: |
-          wget https://github.com/homeport/termshot/releases/download/v0.4.1/termshot_0.4.1_linux_amd64.tar.gz
-          tar xzf termshot_0.4.1_linux_amd64.tar.gz
-          sudo mv termshot /usr/local/bin/
-          rm termshot_0.4.1_linux_amd64.tar.gz
-          termshot --help
-
       - name: build
         run: |
           uv build
@@ -110,12 +102,4 @@ jobs:
         run: |
           uv run crx-analyzer analyze --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output pretty
           uv run crx-analyzer analyze --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output pretty
-    #       termshot --show-cmd --filename "chrome-pretty.png" -- "uv run crx-analyzer --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output pretty"
-    #   - name: Upload screenshots as artifacts
-    #     uses: actions/upload-artifact@v4
-    #     with:
-    #       name: extension-analysis-screenshots
-    #       path: |
-    #         edge-pretty.png
-    #         chrome-pretty.png
 
