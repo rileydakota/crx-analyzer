@@ -6,6 +6,8 @@ env:
 on:
   pull_request:
     branches: [ main ]
+  push:
+    branches: [ main ]
 
 permissions:
     pull-requests: write
@@ -102,4 +104,5 @@ jobs:
         run: |
           uv run crx-analyzer analyze --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output pretty
           uv run crx-analyzer analyze --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output pretty
+
 
