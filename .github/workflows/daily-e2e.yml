@@ -1,0 +1,77 @@
+name: Daily E2E Tests
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight UTC
+  workflow_dispatch:  # Allow manual triggers
+
+env:
+  PYTHON_VERSION: "3.10"
+  EXTENSIONS: |
+    {
+      "edge": [
+        "nnkgneoiohoecpdiaponcejilbhhikei",  # Redux DevTools
+        "njpoigijhgbionbfdbaopheedbpdoddi"   # JSON Formatter
+      ],
+      "chrome": [
+        "eaijffijbobmnonfhilihbejadplhddo",  # Bitwarden
+        "hdokiejnpimakedhajhdlcegeplioahd"   # LastPass
+      ]
+    }
+
+jobs:
+  daily_e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install jq
+        run: |
+          sudo apt-get install jq -y
+
+      - name: Install latest crx-analyzer from GHCR
+        run: |
+          uv pip install crx-analyzer --index-url https://ghcr.io/
+
+      - name: Run tests - JSON output
+        continue-on-error: true
+        run: |
+          # Parse extensions from environment variable
+          echo "$EXTENSIONS" > extensions.json
+
+          # Process Edge extensions
+          for id in $(jq -r '.edge[]' extensions.json); do
+            echo "Analyzing Edge extension: $id"
+            uv run crx-analyzer analyze --id "$id" --browser edge --output json | jq . || echo "Failed to analyze Edge extension: $id"
+          done
+
+          # Process Chrome extensions
+          for id in $(jq -r '.chrome[]' extensions.json); do
+            echo "Analyzing Chrome extension: $id"
+            uv run crx-analyzer analyze --id "$id" --browser chrome --output json | jq . || echo "Failed to analyze Chrome extension: $id"
+          done
+
+      - name: Run tests - Pretty output
+        continue-on-error: true
+        run: |
+          # Parse extensions from environment variable
+          echo "$EXTENSIONS" > extensions.json
+
+          # Process Edge extensions
+          for id in $(jq -r '.edge[]' extensions.json); do
+            echo "Analyzing Edge extension: $id"
+            uv run crx-analyzer analyze --id "$id" --browser edge --output pretty || echo "Failed to analyze Edge extension: $id"
+          done
+
+          # Process Chrome extensions
+          for id in $(jq -r '.chrome[]' extensions.json); do
+            echo "Analyzing Chrome extension: $id"
+            uv run crx-analyzer analyze --id "$id" --browser chrome --output pretty || echo "Failed to analyze Chrome extension: $id"
+          done
+
