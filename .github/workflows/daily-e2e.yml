@@ -37,7 +37,7 @@ jobs:
 
       - name: Install latest crx-analyzer from GHCR
         run: |
-          pip install crx-analyzer --index-url https://ghcr.io/
+          pip install crx-analyzer
 
       - name: Run tests - JSON output
         continue-on-error: true
