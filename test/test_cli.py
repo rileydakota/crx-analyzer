@@ -30,19 +30,14 @@ def test_analyze_chrome_extension(tmp_path):
     result = runner.invoke(cli, [
         "analyze",
         "--browser", "chrome",
-        "--output", str(tmp_path),
-        extension_id
+        "--output", "json",
+        "-i", extension_id
     ])
     
     assert result.exit_code == 0
     
-    # Check if report file was created
-    report_path = tmp_path / f"{extension_id}_report.json"
-    assert report_path.exists()
-    
-    # Validate report contents
-    with open(report_path) as f:
-        report = json.load(f)
+    # Parse JSON output directly from result
+    report = json.loads(result.output)
         assert report["name"] == "Redux DevTools"
         assert "risk_score" in report
         assert "permissions" in report
@@ -56,19 +51,14 @@ def test_analyze_edge_extension(tmp_path):
     result = runner.invoke(cli, [
         "analyze",
         "--browser", "edge",
-        "--output", str(tmp_path),
-        extension_id
+        "--output", "json",
+        "-i", extension_id
     ])
     
     assert result.exit_code == 0
     
-    # Check if report file was created
-    report_path = tmp_path / f"{extension_id}_report.json"
-    assert report_path.exists()
-    
-    # Validate report contents
-    with open(report_path) as f:
-        report = json.load(f)
+    # Parse JSON output directly from result
+    report = json.loads(result.output)
         assert report["name"] == "Redux DevTools"
         assert "risk_score" in report
         assert "permissions" in report
