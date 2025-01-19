@@ -39,39 +39,8 @@ jobs:
         run: |
           pip install crx-analyzer
 
-      - name: Run tests - JSON output
+      - name: Run E2E tests
         continue-on-error: true
         run: |
-          # Parse extensions from environment variable
-          echo "$EXTENSIONS" > extensions.json
-
-          # Process Edge extensions
-          for id in $(jq -r '.edge[]' extensions.json); do
-            echo "Analyzing Edge extension: $id"
-            uv run crx-analyzer analyze --id "$id" --browser edge --output json | jq . || echo "Failed to analyze Edge extension: $id"
-          done
-
-          # Process Chrome extensions
-          for id in $(jq -r '.chrome[]' extensions.json); do
-            echo "Analyzing Chrome extension: $id"
-            uv run crx-analyzer analyze --id "$id" --browser chrome --output json | jq . || echo "Failed to analyze Chrome extension: $id"
-          done
-
-      - name: Run tests - Pretty output
-        continue-on-error: true
-        run: |
-          # Parse extensions from environment variable
-          echo "$EXTENSIONS" > extensions.json
-
-          # Process Edge extensions
-          for id in $(jq -r '.edge[]' extensions.json); do
-            echo "Analyzing Edge extension: $id"
-            uv run crx-analyzer analyze --id "$id" --browser edge --output pretty || echo "Failed to analyze Edge extension: $id"
-          done
-
-          # Process Chrome extensions
-          for id in $(jq -r '.chrome[]' extensions.json); do
-            echo "Analyzing Chrome extension: $id"
-            uv run crx-analyzer analyze --id "$id" --browser chrome --output pretty || echo "Failed to analyze Chrome extension: $id"
-          done
+          uv run pytest -v -m e2e test/test_cli.py
 
