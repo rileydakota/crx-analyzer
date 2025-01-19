@@ -6,6 +6,12 @@ test_cases = [
     # Edge extensions
     ("edge", "nnkgneoiohoecpdiaponcejilbhhikei"),  # Redux DevTools
     ("edge", "njpoigijhgbionbfdbaopheedbpdoddi"),  # JSON Formatter
+    ("edge", "bdaafgjhhjkdplpffldcncdignokfkbo"),  # Norton Safe Web
+    ("edge", "fphgeikpdcdcheaochkhldmnfblfogla"),  # NordVPN
+    ("edge", "icahgcdchandbkbhminlkmeljdoflpoi"),  # Elder Scrolls Skyrim
+    ("edge", "iifjijkgednpbhdbgoopbmikphckgbfj"),  # Google to Microsoft CDN
+    ("edge", "eghgdppgmgnipiomjkkhhcihpogpcodk"),  # AI Tweet Regenerator
+    # Chrome extensions
     # Chrome security/privacy extensions
     ("chrome", "gighmmpiobklfepjocnamgkkbiglidom"),  # AdBlock
     ("chrome", "cfhdojbkjhnklbpkdaibdccddilifddb"),  # AdBlock Plus
@@ -18,6 +24,9 @@ test_cases = [
     ("chrome", "eaijffijbobmnonfhilihbejadplhddo"),  # Bitwarden
     ("chrome", "hdokiejnpimakedhajhdlcegeplioahd"),  # LastPass
     ("chrome", "ojkchikaholjmcnefhjlbohackpeeknd"),  # Vue.js devtools
+    ("chrome", "bmnlcjabgnpnenekpadlanbbkooimhnj"),  # Honey
+    ("chrome", "ccbpbkebodcjkknkfkpmfeciinhidaeh"),  # Avira
+    ("chrome", "dnhpnfgdlenaccegplpojghhmaamnnfp"),  # Augmented Steam
 ]
 
 
