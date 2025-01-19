@@ -1,0 +1,102 @@
+import json
+import pytest
+from click.testing import CliRunner
+from crx_analyzer.cli import cli
+
+
+@pytest.mark.e2e
+def test_cli_help():
+    """Test basic CLI help output"""
+    runner = CliRunner()
+    result = runner.invoke(cli, ["--help"])
+    assert result.exit_code == 0
+    assert "Usage: crx-analyzer" in result.output
+
+
+@pytest.mark.e2e
+def test_analyze_command_help():
+    """Test analyze command help output"""
+    runner = CliRunner()
+    result = runner.invoke(cli, ["analyze", "--help"])
+    assert result.exit_code == 0
+    assert "Usage: crx-analyzer analyze" in result.output
+
+
+@pytest.mark.e2e
+def test_analyze_chrome_extension(tmp_path):
+    """Test analyzing a known Chrome extension"""
+    runner = CliRunner()
+    extension_id = "nhdogjmejiglipccpnnnanhbledajbpd"  # Redux DevTools
+    result = runner.invoke(cli, [
+        "analyze",
+        "--browser", "chrome",
+        "--output", str(tmp_path),
+        extension_id
+    ])
+    
+    assert result.exit_code == 0
+    
+    # Check if report file was created
+    report_path = tmp_path / f"{extension_id}_report.json"
+    assert report_path.exists()
+    
+    # Validate report contents
+    with open(report_path) as f:
+        report = json.load(f)
+        assert report["name"] == "Redux DevTools"
+        assert "risk_score" in report
+        assert "permissions" in report
+
+
+@pytest.mark.e2e
+def test_analyze_edge_extension(tmp_path):
+    """Test analyzing a known Edge extension"""
+    runner = CliRunner()
+    extension_id = "nnkgneoiohoecpdiaponcejilbhhikei"  # Edge Redux DevTools
+    result = runner.invoke(cli, [
+        "analyze",
+        "--browser", "edge",
+        "--output", str(tmp_path),
+        extension_id
+    ])
+    
+    assert result.exit_code == 0
+    
+    # Check if report file was created
+    report_path = tmp_path / f"{extension_id}_report.json"
+    assert report_path.exists()
+    
+    # Validate report contents
+    with open(report_path) as f:
+        report = json.load(f)
+        assert report["name"] == "Redux DevTools"
+        assert "risk_score" in report
+        assert "permissions" in report
+
+
+@pytest.mark.e2e
+def test_analyze_invalid_extension():
+    """Test analyzing an invalid extension ID"""
+    runner = CliRunner()
+    result = runner.invoke(cli, [
+        "analyze",
+        "--browser", "chrome",
+        "invalid_extension_id"
+    ])
+    
+    assert result.exit_code != 0
+    assert "Invalid extension ID" in result.output
+
+
+@pytest.mark.e2e
+def test_analyze_invalid_browser():
+    """Test analyzing with invalid browser"""
+    runner = CliRunner()
+    result = runner.invoke(cli, [
+        "analyze",
+        "--browser", "invalid",
+        "some_extension_id"
+    ])
+    
+    assert result.exit_code != 0
+    assert "Invalid value for '--browser'" in result.output
