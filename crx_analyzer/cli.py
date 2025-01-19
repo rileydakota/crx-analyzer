@@ -35,7 +35,24 @@ def get_version():
     help="Output format",
     required=True,
 )
-def analyze(id, browser, output):
+@click.option(
+    "--max-files",
+    type=int,
+    default=10,
+    help="Maximum number of JavaScript files to display",
+)
+@click.option(
+    "--max-urls",
+    type=int,
+    default=10,
+    help="Maximum number of URLs to display",
+)
+@click.option(
+    "--permissions",
+    is_flag=True,
+    help="Display only permissions and metadata tables",
+)
+def analyze(id, browser, output, max_files, max_urls, permissions):
     browser_enum = Browser(browser)
     extension = Extension(id, browser_enum)
     report = get_risk_report(extension)
@@ -93,18 +110,28 @@ def analyze(id, browser, output):
             console.print("\n" * 3)
             console.print(grid)
 
-            js_files_table = Table()
-            js_files_table.add_column("File")
-            for file in report.javascript_files:
-                js_files_table.add_row(file)
+            if not permissions:
+                js_files_table = Table(title="JavaScript Files")
+                js_files_table.add_column("File")
+                for file in report.javascript_files[:max_files]:
+                    js_files_table.add_row(file)
 
-            url_ref_table = Table()
-            url_ref_table.add_column("URL")
-            for url in report.urls:
-                url_ref_table.add_row(url)
+                url_ref_table = Table(title="URLs Referenced")
+                url_ref_table.add_column("URL")
+                for url in report.urls[:max_urls]:
+                    url_ref_table.add_row(url)
 
-            console.print(js_files_table)
-            console.print(url_ref_table)
+                console.print(js_files_table)
+                console.print(url_ref_table)
+
+                if len(report.javascript_files) > max_files:
+                    console.print(
+                        f"\n[yellow]Showing {max_files} of {len(report.javascript_files)} JavaScript files. Use --max-files=INT or --output json to show more."
+                    )
+                if len(report.urls) > max_urls:
+                    console.print(
+                        f"[yellow]Showing {max_urls} of {len(report.urls)} URLs. Use --max-urls=INT or --output json to show more."
+                    )
         case "json":
             print(report.json())
 
