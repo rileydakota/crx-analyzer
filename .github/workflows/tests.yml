@@ -97,17 +97,9 @@ jobs:
       - name: install cli
         run: |
           uv run pip install dist/crx_analyzer-0.1.0a3-py3-none-any.whl
-      - name: run cli - json
+      - name: Run E2E tests
         run: |
-          uv run crx-analyzer analyze --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output json | jq .
-          uv run crx-analyzer analyze --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output json | jq .
-      - name: run cli - pretty
-        run: |
-          uv run crx-analyzer analyze --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output pretty
-          uv run crx-analyzer analyze --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output pretty
-          uv run crx-analyzer analyze --id ojkchikaholjmcnefhjlbohackpeeknd --browser chrome --output pretty --permissions
-          uv run crx-analyzer analyze --id ojkchikaholjmcnefhjlbohackpeeknd --browser chrome --output pretty --max-files 20
-          uv run crx-analyzer analyze --id ojkchikaholjmcnefhjlbohackpeeknd --browser chrome --output pretty --max-urls 20
+          uv run pytest -v -m e2e test/test_cli.py
 
 
 

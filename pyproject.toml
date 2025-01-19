@@ -24,6 +24,10 @@ dev = [
 pythonpath = [
     "."
 ]
+markers = [
+    "e2e: marks tests as end-to-end tests (deselected by default)"
+]
+addopts = "-m 'not e2e'"
 
 [project.scripts]
 crx-analyzer = "crx_analyzer.cli:cli"
