@@ -29,7 +29,7 @@ def test_risk_report():
     extension.permissions = [ChromePermission.COOKIES, ChromePermission.STORAGE]
     extension.javascript_files = ["test.js"]
     extension.urls = ["https://example.com"]
-    
+
     report = get_risk_report(extension)
     assert report.name == "Test Extension"
     assert report.sha256 == "test_hash"
@@ -49,6 +49,6 @@ def test_risk_score_max():
     extension.permissions = [ChromePermission.COOKIES] * 3  # 3 * 45 would be 135
     extension.javascript_files = []
     extension.urls = []
-    
+
     report = get_risk_report(extension)
     assert report.risk_score == 100
