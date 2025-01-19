@@ -28,6 +28,7 @@ class OptionsUI(BaseModel):
 class BackgroundConfig(BaseModel):
     service_worker: Optional[str] = None
     persistent: bool = False
+    scripts: Optional[List[str]] = None  # For Manifest V2 support
 
 
 class ExternallyConnectable(BaseModel):

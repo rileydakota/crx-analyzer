@@ -59,8 +59,8 @@ def test_edge_extension_manifest_fields(monkeypatch):
         # Test optional fields
         assert extension.manifest.options_ui.page == "options.html"
         assert extension.manifest.options_ui.chrome_style == True
-        assert extension.manifest.background.scripts == ["background.bundle.js"]
         assert extension.manifest.background.persistent == False
+        assert extension.manifest.background.scripts == ["background.bundle.js"]
 
 
 def test_edge_extension_permissions(monkeypatch):
