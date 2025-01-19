@@ -1,7 +1,8 @@
 import os
 import pytest
 import shutil
-from unittest.mock import patch
+from unittest.mock import patch, Mock
+from requests import HTTPError
 from crx_analyzer.extension import Extension, Browser, InvalidExtensionIDError
 
 
