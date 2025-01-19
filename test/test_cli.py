@@ -38,9 +38,9 @@ def test_analyze_chrome_extension(tmp_path):
     
     # Parse JSON output directly from result
     report = json.loads(result.output)
-        assert report["name"] == "Redux DevTools"
-        assert "risk_score" in report
-        assert "permissions" in report
+    assert report["name"] == "Redux DevTools"
+    assert "risk_score" in report
+    assert "permissions" in report
 
 
 @pytest.mark.e2e
@@ -59,9 +59,9 @@ def test_analyze_edge_extension(tmp_path):
     
     # Parse JSON output directly from result
     report = json.loads(result.output)
-        assert report["name"] == "Redux DevTools"
-        assert "risk_score" in report
-        assert "permissions" in report
+    assert report["name"] == "Redux DevTools"
+    assert "risk_score" in report
+    assert "permissions" in report
 
 
 @pytest.mark.e2e
