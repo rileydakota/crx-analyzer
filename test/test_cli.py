@@ -38,7 +38,7 @@ def test_analyze_chrome_extension(tmp_path):
     
     # Parse JSON output directly from result
     report = json.loads(result.output)
-    assert report["name"] == "Redux DevTools"
+    assert report["name"] == "Vue.js devtools"
     assert "risk_score" in report
     assert "permissions" in report
 
@@ -75,7 +75,7 @@ def test_analyze_invalid_extension():
     ])
     
     assert result.exit_code != 0
-    assert "Invalid extension ID" in result.output
+    assert "Missing option '-i' / '--id'" in result.output
 
 
 @pytest.mark.e2e
@@ -89,4 +89,4 @@ def test_analyze_invalid_browser():
     ])
     
     assert result.exit_code != 0
-    assert "Invalid value for '--browser'" in result.output
+    assert "Invalid value for '-b' / '--browser': 'invalid' is not one of 'chrome', 'edge'" in result.output
