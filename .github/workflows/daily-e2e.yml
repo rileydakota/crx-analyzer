@@ -1,5 +1,6 @@
 name: Daily E2E Tests
 
+
 on:
   schedule:
     - cron: '0 0 * * *'  # Run daily at midnight UTC
@@ -7,22 +8,15 @@ on:
 
 env:
   PYTHON_VERSION: "3.10"
-  EXTENSIONS: |
-    {
-      "edge": [
-        "nnkgneoiohoecpdiaponcejilbhhikei",  # Redux DevTools
-        "njpoigijhgbionbfdbaopheedbpdoddi"   # JSON Formatter
-      ],
-      "chrome": [
-        "eaijffijbobmnonfhilihbejadplhddo",  # Bitwarden
-        "hdokiejnpimakedhajhdlcegeplioahd"   # LastPass
-      ]
-    }
 
 jobs:
   daily_e2e:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -42,5 +36,4 @@ jobs:
       - name: Run E2E tests
         continue-on-error: true
         run: |
-          uv run pytest -v -m e2e test/test_cli.py
-
+          uv run pytest -v -m e2e test/test_cli_nightly.py

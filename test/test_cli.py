@@ -5,6 +5,32 @@ from crx_analyzer.cli import cli
 
 
 @pytest.mark.e2e
+def test_analyze_default_output_format():
+    """Test that the default output format is pretty print"""
+    runner = CliRunner()
+    extension_id = "nnkgneoiohoecpdiaponcejilbhhikei"  # Redux DevTools
+    result = runner.invoke(cli, ["analyze", "--browser", "edge", "-i", extension_id])
+
+    assert result.exit_code == 0
+    assert "Extension Metadata" in result.output
+    assert "Risk Level" in result.output
+    assert "Permissions" in result.output
+
+
+@pytest.mark.e2e
+def test_analyze_javascript_file_limits():
+    """Test JavaScript file listing with different limits"""
+    runner = CliRunner()
+    extension_id = "ojkchikaholjmcnefhjlbohackpeeknd"  # Chrome extension
+
+    # First test default limit of 10 files
+    result = runner.invoke(cli, ["analyze", "--browser", "chrome", "-i", extension_id])
+
+    assert result.exit_code == 0
+    assert "or --output json to show more." in result.output
+
+
+@pytest.mark.e2e
 def test_cli_help():
     """Test basic CLI help output"""
     runner = CliRunner()
@@ -27,15 +53,12 @@ def test_analyze_chrome_extension(tmp_path):
     """Test analyzing a known Chrome extension"""
     runner = CliRunner()
     extension_id = "nhdogjmejiglipccpnnnanhbledajbpd"  # Redux DevTools
-    result = runner.invoke(cli, [
-        "analyze",
-        "--browser", "chrome",
-        "--output", "json",
-        "-i", extension_id
-    ])
-    
+    result = runner.invoke(
+        cli, ["analyze", "--browser", "chrome", "--output", "json", "-i", extension_id]
+    )
+
     assert result.exit_code == 0
-    
+
     # Parse JSON output directly from result
     report = json.loads(result.output)
     assert report["name"] == "Vue.js devtools"
@@ -48,15 +71,12 @@ def test_analyze_edge_extension(tmp_path):
     """Test analyzing a known Edge extension"""
     runner = CliRunner()
     extension_id = "nnkgneoiohoecpdiaponcejilbhhikei"  # Edge Redux DevTools
-    result = runner.invoke(cli, [
-        "analyze",
-        "--browser", "edge",
-        "--output", "json",
-        "-i", extension_id
-    ])
-    
+    result = runner.invoke(
+        cli, ["analyze", "--browser", "edge", "--output", "json", "-i", extension_id]
+    )
+
     assert result.exit_code == 0
-    
+
     # Parse JSON output directly from result
     report = json.loads(result.output)
     assert report["name"] == "Redux DevTools"
@@ -68,12 +88,10 @@ def test_analyze_edge_extension(tmp_path):
 def test_analyze_invalid_extension():
     """Test analyzing an invalid extension ID"""
     runner = CliRunner()
-    result = runner.invoke(cli, [
-        "analyze",
-        "--browser", "chrome",
-        "invalid_extension_id"
-    ])
-    
+    result = runner.invoke(
+        cli, ["analyze", "--browser", "chrome", "invalid_extension_id"]
+    )
+
     assert result.exit_code != 0
     assert "Missing option '-i' / '--id'" in result.output
 
@@ -82,11 +100,12 @@ def test_analyze_invalid_extension():
 def test_analyze_invalid_browser():
     """Test analyzing with invalid browser"""
     runner = CliRunner()
-    result = runner.invoke(cli, [
-        "analyze",
-        "--browser", "invalid",
-        "some_extension_id"
-    ])
-    
+    result = runner.invoke(
+        cli, ["analyze", "--browser", "invalid", "some_extension_id"]
+    )
+
     assert result.exit_code != 0
-    assert "Invalid value for '-b' / '--browser': 'invalid' is not one of 'chrome', 'edge'" in result.output
+    assert (
+        "Invalid value for '-b' / '--browser': 'invalid' is not one of 'chrome', 'edge'"
+        in result.output
+    )
