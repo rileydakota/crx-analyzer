@@ -81,7 +81,19 @@ crx-analyzer analyze --id eaijffijbobmnonfhilihbejadplhddo --browser edge --outp
 Output extension results to json format
 
 ```bash
-crx-analyzer analyze --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output json
+crx-analyzer analyze --id eaijffijbobmnonfhilihbejadplhddo --browser edge --output json
+```
+
+Show only permissions and metadata in pretty mode
+
+```bash
+crx-analyzer analyze --id eaijffijbobmnonfhilihbejadplhddo --browser edge --permissions
+```
+
+Limit the number of JavaScript files displayed to 20
+
+```bash
+crx-analyzer analyze --id eaijffijbobmnonfhilihbejadplhddo --browser edge --max-files 20
 ```
 
 # Development
