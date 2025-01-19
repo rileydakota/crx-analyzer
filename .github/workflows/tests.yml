@@ -105,5 +105,9 @@ jobs:
         run: |
           uv run crx-analyzer analyze --id nnkgneoiohoecpdiaponcejilbhhikei --browser edge --output pretty
           uv run crx-analyzer analyze --id eaijffijbobmnonfhilihbejadplhddo --browser chrome --output pretty
+          uv run crx-analyzer analyze --id ojkchikaholjmcnefhjlbohackpeeknd --browser chrome --output pretty --permissions
+          uv run crx-analyzer analyze --id ojkchikaholjmcnefhjlbohackpeeknd --browser chrome --output pretty --max-files 20
+          uv run crx-analyzer analyze --id ojkchikaholjmcnefhjlbohackpeeknd --browser chrome --output pretty --max-urls 20
+
 
 
