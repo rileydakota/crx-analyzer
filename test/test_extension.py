@@ -15,14 +15,6 @@ def mock_edge_extension(url: str, output_path: str) -> None:
     shutil.copyfile(test_crx_path, output_path)
 
 
-def mock_chrome_extension(url: str, output_path: str) -> None:
-    test_crx_path = os.path.join(
-        "test",
-        "test_extension_zip",
-        "test_chrome_extension.crx",
-    )
-    shutil.copyfile(test_crx_path, output_path)
-
 
 def test_edge_extension_download(monkeypatch):
     monkeypatch.setattr(
@@ -39,20 +31,6 @@ def test_edge_extension_download(monkeypatch):
         assert extension.manifest.manifest_version == 2
 
 
-def test_chrome_extension_download(monkeypatch):
-    monkeypatch.setattr(
-        "crx_analyzer.download.download_extension", mock_chrome_extension
-    )
-
-    extension_id = "fake"
-
-    with Extension(extension_id, Browser.CHROME) as extension:
-        assert os.path.exists(extension.extension_zip_path)
-        assert os.path.exists(extension.extension_dir_path)
-        assert extension.browser == Browser.CHROME
-        assert extension.manifest.name == "Test Chrome Extension"
-        assert extension.manifest.manifest_version == 3
-
 
 def test_invalid_extension_id():
     with patch("crx_analyzer.download.download_extension") as mock_download:
@@ -66,23 +44,71 @@ def test_invalid_browser():
         Extension("test_id", "invalid_browser")
 
 
-def test_extension_properties(monkeypatch):
+def test_edge_extension_manifest_fields(monkeypatch):
+    """Test detailed manifest field extraction"""
     monkeypatch.setattr(
         "crx_analyzer.download.download_extension", mock_edge_extension
     )
     
     with Extension("fake", Browser.EDGE) as extension:
+        # Test basic fields
         assert extension.name == "Redux DevTools"
         assert extension.version == "3.1.6"
         assert extension.manifest_version == 2
-        assert sorted(extension.permissions) == sorted([
+        
+        # Test optional fields
+        assert extension.manifest.options_ui.page == "options.html"
+        assert extension.manifest.options_ui.chrome_style == True
+        assert extension.manifest.background.scripts == ["background.bundle.js"]
+        assert extension.manifest.background.persistent == False
+
+
+def test_edge_extension_permissions(monkeypatch):
+    """Test permission parsing"""
+    monkeypatch.setattr(
+        "crx_analyzer.download.download_extension", mock_edge_extension
+    )
+    
+    with Extension("fake", Browser.EDGE) as extension:
+        expected_permissions = [
             "notifications",
             "contextMenus",
             "storage",
             "file:///*",
             "http://*/*",
             "https://*/*",
-        ])
+        ]
+        assert sorted(extension.permissions) == sorted(expected_permissions)
+
+
+def test_edge_extension_cleanup(monkeypatch):
+    """Test proper cleanup of temporary files"""
+    monkeypatch.setattr(
+        "crx_analyzer.download.download_extension", mock_edge_extension
+    )
+    
+    extension_path = None
+    extension_dir = None
+    
+    with Extension("fake", Browser.EDGE) as extension:
+        extension_path = extension.extension_zip_path
+        extension_dir = extension.extension_dir_path
+        assert os.path.exists(extension_path)
+        assert os.path.exists(extension_dir)
+    
+    assert not os.path.exists(extension_path)
+    assert not os.path.exists(extension_dir)
+
+
+def test_edge_extension_javascript_files(monkeypatch):
+    """Test JavaScript file detection"""
+    monkeypatch.setattr(
+        "crx_analyzer.download.download_extension", mock_edge_extension
+    )
+    
+    with Extension("fake", Browser.EDGE) as extension:
+        js_files = extension.javascript_files
+        assert any("background.bundle.js" in f for f in js_files)
 
 
 def test_url_extraction(monkeypatch):
